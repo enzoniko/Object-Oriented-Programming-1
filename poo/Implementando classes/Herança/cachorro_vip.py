@@ -4,7 +4,7 @@ from cachorro import Cachorro
 class CachorroVip(Cachorro):
 
     # Possui restricao, banho e vantagem como atributos adicionais
-    def __init__(self, restricao, banho, vantagem = False):
+    def __init__(self, raca, cor, peso, idade, nome_animal, nome_dono, restricao, banho, vantagem = False):
         super().__init__(raca, cor, peso, idade, nome_animal, nome_dono)
         self.restricao = restricao
         self.banho = banho

@@ -3,8 +3,8 @@ from cachorro_vip import CachorroVip
 
 # Lista de cachorros
 cachorros = list()
-# ADICIONAR FUNCIONALIDADE DE SER VIP
-while True:
+
+while True: #laço das operações
     print('Menu do PetShop')
     print()
     print('Escolha uma operação para realizar: ')
@@ -18,7 +18,8 @@ while True:
     print('-----------------------------------------------------')
     operacao = int(input('Escolha uma operação: '))
     print('-----------------------------------------------------')
-
+    
+    #Cadastrando o pet (informações padrões)
     if operacao == 1:
         print('Cadastro do Pet')
         print()
@@ -28,8 +29,25 @@ while True:
         idade = int(input('Idade: '))
         nome_animal = str(input('Nome do Pet: '))
         nome_dono = str(input('Nome do dono: '))
-        cachorro = Cachorro(raca, cor, peso, idade, nome_animal, nome_dono)
-        cachorros.append(cachorro)
+        vip = str(input('Vip (S/N): '))
+        if vip == 'S': #Cadastrando o pet (informações vip)
+            restricao = str(input('Restrição Alimentar (S/N): '))
+            if restricao == 'S':
+                restricao = True
+            else:
+                restricao = False
+            banho = str(input('Periodicidade do banho: '))
+            vantagem = str(input('Recebe desconto (S/N): '))
+            if vantagem == 'S':
+                vantagem = True
+            else:
+                vantagem = False
+            cachorro = CachorroVip(raca, cor, peso, idade, nome_animal, nome_dono, restricao, banho, vantagem)
+            cachorros.append(cachorro)
+        else:
+            cachorro = Cachorro(raca, cor, peso, idade, nome_animal, nome_dono)
+            cachorros.append(cachorro)
+        #Printa as informações do Pet
         print('-----------------------------------------------------') 
         print('Cadastro realizado com sucesso!')
         print('Informações do Pet cadastrado: ')
@@ -39,9 +57,14 @@ while True:
         print('Idade:', cachorro.get_idade())
         print('Nome do Pet:', cachorro.get_nome_animal())
         print('Nome do dono:', cachorro.get_nome_dono())
+        print("ID:", cachorro.id)
+        if vip == 'S':
+            print('Restrição Alimentar:', cachorro.get_restricao())
+            print('Periodicidade do banho:', cachorro.get_banho())
+            print('Recebe desconto:', cachorro.get_vantagem())
         print('-----------------------------------------------------')
         
-    elif operacao == 2:
+    elif operacao == 2: #Alterar informações do pet
         print('Alterar informação do Pet')
         print()
         nome_animal = str(input('Nome do Pet: '))
@@ -54,6 +77,7 @@ while True:
                 cachorro.set_idade(int(input('Idade: ')))
                 cachorro.set_nome_animal(str(input('Nome do Pet: ')))
                 cachorro.set_nome_dono(str(input('Nome do dono: ')))
+                #Printa as informações atualizadas do Pet
                 print('-----------------------------------------------------')
                 print('Informações do Pet alteradas com sucesso!')
                 print('Informações do Pet alteradas: ')
@@ -65,11 +89,12 @@ while True:
                 print('Nome do dono:', cachorro.get_nome_dono())
                 print('-----------------------------------------------------')
                 
-            elif nome_animal not in [cachorro.get_nome_animal() for cachorro in cachorros]:
-                print('Não foi encontrado nenhum animal com o nome informado!')
+            elif nome_animal not in [cachorro.get_nome_animal() for cachorro in cachorros]: #Procurando pelo nome_animal de cada cachorro na lista cachorros, se não encontrado ele printa o recado.
+                print('Não foi encontrado nenhum Pet com o nome informado!')
                 print('-----------------------------------------------------')
 
-    elif operacao == 3: # Operação 3 - Consultar
+    elif operacao == 3: #Consulta informações do Pet
+            #Menu de opções para procurar pelo nome do pet ou nome do dono
             print('Consultar Pet')
             print()
             print('1 - Consultar pelo nome do Pet')
@@ -77,7 +102,7 @@ while True:
             print('-----------------------------------------------------')
             consulta = int(input('Escolha a forma de consulta: '))
             
-            if consulta == 1: 
+            if consulta == 1: #Consultando pelo nome do Pet
                 print('Consultar o Pet pelo seu nome')
                 print('-----------------------------------------------------')
                 nome_animal = str(input('Digite o nome do Pet: '))
@@ -89,14 +114,18 @@ while True:
                         print('Peso:', cachorro.get_peso())
                         print('Idade:', cachorro.get_idade())
                         print('Nome do dono:', cachorro.get_nome_dono())
+                        if type(cachorro).__name__ == 'CachorroVip':
+                            print('Restrição Alimentar:', cachorro.get_restricao())
+                            print('Periodicidade do banho:', cachorro.get_banho())
+                            print('Recebe desconto:', cachorro.get_vantagem())
                         print('-----------------------------------------------------')
                 
                     elif nome_animal not in [cachorro.get_nome_animal() for cachorro in cachorros]:
-                        print('Não foi encontrado nenhum animal com o nome informado!')
+                        print('Não foi encontrado nenhum Pet com o nome informado!')
                         print('-----------------------------------------------------')
                     
                         
-            elif consulta == 2:
+            elif consulta == 2: #Consultando pelo nome do dono
                 print('Consultar o Pet pelo nome do dono')
                 print('-----------------------------------------------------')
                 nome_dono = str(input('Digite o nome do dono: '))
@@ -108,13 +137,17 @@ while True:
                         print('Peso:', cachorro.get_peso())
                         print('Idade:', cachorro.get_idade())
                         print('Nome do dono:', cachorro.get_nome_dono())
-                        print('-----------------------------------------------------')
-            
-                    elif nome_dono not in [cachorro.get_nome_animal() for cachorro in cachorros]:
-                        print('Não foi encontrado nenhum animal com o nome informado!')
+                        if type(cachorro).__name__ == 'CachorroVip':
+                            print('Restrição Alimentar:', cachorro.get_restricao())
+                            print('Periodicidade do banho:', cachorro.get_banho())
+                            print('Recebe desconto:', cachorro.get_vantagem())
                         print('-----------------------------------------------------')
 
-    elif operacao == 4:
+                    elif nome_dono not in [cachorro.get_nome_dono() for cachorro in cachorros]: #Procurando pelo nome_dono de cada cachorro na lista cachorros, se não encontrado ele printa o recado.
+                        print('Não foi encontrado nenhum Dono com o nome informado!') 
+                        print('-----------------------------------------------------')
+
+    elif operacao == 4: #Excluindo o Pet da lista
         print('Excluir cadastro do Pet')
         print()
         nome_animal = str(input('Nome do Pet: '))
@@ -124,28 +157,32 @@ while True:
                 print('Cadastro excluído com sucesso!')
                 print('-----------------------------------------------------')
             elif nome_animal not in [cachorro.get_nome_animal() for cachorro in cachorros]:
-                print('Não foi encontrado nenhum animal com o nome informado!')
+                print('Não foi encontrado nenhum Pet com o nome informado!')
                 print('-----------------------------------------------------')
 
-    elif operacao == 5:
+    elif operacao == 5: #Verificando se o Pet cadastrado tem restrição alimentar
         print('Verificar se o Pet tem restrição Alimentar')
         print()
         nome_animal = str(input('Nome do Pet: '))
         for cachorro in cachorros:
             if nome_animal == cachorro.get_nome_animal():
-                if cachorro.get_restricao() == True:
-                    print('O Pet tem restrição Alimentar!')
-                    print('-----------------------------------------------------')
-                    
+                if type(cachorro).__name__ == 'CachorroVip': #Verifica se o cachorro é vip
+                    if cachorro.get_restricao() == True:
+                        print('O Pet tem restrição Alimentar!')
+                        print('-----------------------------------------------------')
+                        
+                    else:
+                        print('O Pet não tem restrição Alimentar!')
+                        print('-----------------------------------------------------')
                 else:
-                    print('O Pet não tem restrição Alimentar!')
+                    print('O Pet não tem essa informação registrada!')
                     print('-----------------------------------------------------')
-            elif nome_animal not in [cachorro.get_nome_animal() for cachorro in cachorros]:
-                    print('Não foi encontrado nenhum animal com o nome informado!')
+            elif nome_animal not in [cachorro.get_nome_animal() for cachorro in cachorros]: 
+                    print('Não foi encontrado nenhum Pet com o nome informado!')
                     print('-----------------------------------------------------')
         
-    elif operacao == 6:
-        print("Verificar qual Pet é mais idoso")
+    elif operacao == 6: #Procura o Pet com maior idade
+        print("Verificar qual Pet é mais idoso") 
         print()
         for cachorro in cachorros:
             if cachorro.get_idade() == max([cachorro.get_idade() for cachorro in cachorros]):
@@ -157,9 +194,8 @@ while True:
                 print('Nome do dono:', cachorro.get_nome_dono())
                 print('-----------------------------------------------------')
 
-    elif operacao == 8:
+    elif operacao == 7: #Encerra o programa
         print('Sair do programa')
         print('-----------------------------------------------------')
         print('Obrigado por utilizar o nosso sistema!')
-        break
-                
+        break #Sai do while

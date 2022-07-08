@@ -7,6 +7,7 @@ class Cachorro:
         self.idade = idade
         self.nome_animal = nome_animal 
         self.nome_dono = nome_dono
+        self.id = id(self)
 
 # Modifica as informações da classe Cachorro
     def set_raca(self, raca):
