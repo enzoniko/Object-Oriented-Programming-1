@@ -55,12 +55,14 @@ class Filme:
         self.idiomas = input("Idiomas: ").split(", ")
     
 # Inicio dos tests: 
+"""
 f1 = Filme("Titanic", ["Drama", "Romance"], ["2D", "3D"], ["Ingles", "Espanhol"])
 f2 = Filme("The Avengers", ["Ação", "Aventura"], ["2D", "3D"], ["Ingles", "Portugues"])
 
 f1.print_info()
 f2.modificar_info()
 f2.print_info()
+"""
 # Fim dos tests
 
 
