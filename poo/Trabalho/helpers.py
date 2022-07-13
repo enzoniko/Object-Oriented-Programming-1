@@ -2,10 +2,14 @@
 def lista_strings_para_string(lista):
     return ", ".join(lista)
 
+# Função printa_matriz: recebe uma matriz e imprime a matriz
+
 
 def printa_matriz(matriz):
     for linha in matriz:
         print(linha)
+
+# Função check_1: recebe um número e retorna um x se o número for 1 e um espaço se o número for 0
 
 
 def check_1(n):

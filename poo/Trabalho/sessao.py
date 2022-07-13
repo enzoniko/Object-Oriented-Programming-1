@@ -32,6 +32,10 @@ class Sessao(Filme):
     def get_DDD(self):
         return self.DDD
 
+    # get_id retorna o id da sessão
+    def get_id(self):
+        return self.id
+
     # set_legenda modifica se a sessão é legendada
     def set_legenda(self, legenda):
         self.legenda = legenda
@@ -46,12 +50,24 @@ class Sessao(Filme):
 
     # print_info imprime os informações da sessão
     def print_info(self):
-        super().print_info()
-        print(f"Legenda: {self.legenda}")
+        # super().print_info()
+        # Imprime se a sessão é legendada ou dublada
+        if self.get_legenda() == True:
+            print("LEGENDADO", end=' ')
+        else:
+            print("DUBLADO", end=' ')
+
+        # Imprime se a sessão é 3D ou 2D
+        if self.get_DDD() == True:
+            print("3D")
+        else:
+            print("2D")
+
+        # Printa os horários
         print(f"Horários: {lista_strings_para_string(self.horarios)}")
-        print(f"3D: {self.DDD}")
 
     # modifica_info modifica as informações da sessão
+
     def modifica_info(self, nome, generos, horarios, DDD, legenda):
         self.set_nome(nome)
         self.set_generos(generos)
@@ -62,6 +78,9 @@ class Sessao(Filme):
     # __eq__ compara se duas sessões são iguais
 
 
+# Exemplo de lista de sessões:
+sessoes = [Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], False, True), Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, False), Sessao("Titanic 2", [
+    "drama", "romance", "ficção científica"], ["19:00", "20:00"], False, False), Sessao("Titanic 2", ["drama", "romance", "ficção científica"], ["19:00", "20:00"], True, False)]
 '''
 # Inicio teste
 s1 = Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, True)

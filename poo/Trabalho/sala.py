@@ -60,9 +60,11 @@ class Sala:
             self.poltronas[indice] = linha
 
     def printar_poltronas(self):
+        # Lista de letras para associar letra com número da poltrona
         letras = ["a", "b", "c", "d", "e", "f", "g",
                   "h", "i", "j", "k", "l", "m", "n", "o"]
 
+        # Printa a numeração das colunas
         print(" ", end=" ")
         for coluna in range(len(self.poltronas[0]) - 1, 0, -1):
             if coluna <= 9:
@@ -70,18 +72,20 @@ class Sala:
             else:
                 print(f"  {coluna} ", end=" ")
 
+        # Printa a letra da linha seguida por cada poltrona da linha
         for linha in range(len(self.poltronas) - 1, 0, -1):
             print()
             print(letras[linha - 1], end=" ")
             for coluna in range(len(self.poltronas[0]) - 1, 0, -1):
+                # Bota um x na poltrona se ela estiver ocupada
                 print(f"[ {check_1(self.poltronas[linha][coluna])} ]", end=" ")
 
+        # Printa a posição da TELA
         print()
         t = "TELA"
         print(t.center((int(len(self.poltronas[0])*6)) - 4))
 
     # set_ocupada modifica se a sala está ocupada
-
     def set_ocupada(self, ocupada):
         self.ocupada = ocupada
 
@@ -89,15 +93,40 @@ class Sala:
     def print_info(self):
         print(f"Ocupada: {self.ocupada}")
         print(f"Cronograma: {self.cronograma}")
-        print(f"Poltronas: \n{printa_matriz(self.poltronas)}")
+        print(f"Poltronas:")
+        printa_matriz(self.poltronas)
         print(f"Sessões: {self.sessoes}")
 
     # Função que adiciona uma sessão à sala (cronograma)
-    # Função que remove função da sala (cronograma)
-    # Função que devolve a sessão que que passara em um determinado horário
+    def adicionar_sessao(self, sessao):
+        chave = sessao.get_id()
+        valor = sessao.get_horarios()
+        # Atualiza o cronograma com a sessão
+        self.cronograma[chave] = valor
+
+        # Adiciona a sessão à lista de sessões
+        self.sessoes.append(sessao)
+    # Função que remove sessão da sala (cronograma)
+    # Função que devolve a sessão que passara em um determinado horário
+
+    def get_sessao_from_cronograma(self):
+        for id in self.cronograma:
+            for sessao in self.sessoes:
+                if sessao.get_id() == id:
+                    sessao.print_info()
 
 
+# Inicio testes
 sala1 = Sala()
 sala1.preencher_poltronas(["a1", "b2", "c3", "d4", "e5", "f6", "a7",
                           "h8", "a9", "f10"])
 sala1.printar_poltronas()
+
+s1 = Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, True)
+s2 = Sessao("The Godfather", ["drama", "crime"],
+            ["14:00", "23:00"], True, True)
+sala1.adicionar_sessao(s1)
+sala1.adicionar_sessao(s2)
+sala1.get_sessao_from_cronograma()
+
+# Fim testes

@@ -31,10 +31,13 @@ class Filme:
 
     # print_info imprime os informações do filme
     def print_info(self):
-        print(f"Nome: {self.nome}")
-        print(f"Gêneros: {lista_strings_para_string(self.generos)}")
+        print(self.nome, end=" (")
+        print(lista_strings_para_string(self.generos), end=")\n")
 
 
+# Exemplo de lista de filmes:
+filmes = [Filme("Titanic", ["drama", "romance"]), Filme(
+    "Titanic 2", ["drama", "romance", "ficção científica"])]
 '''
 # Inicio teste
 # Cria um filme
