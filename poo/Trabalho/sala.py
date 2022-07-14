@@ -1,9 +1,12 @@
 # Importa a sub classe Sessao do módulo sessao
-from sessao import Sessao
+from sessao import Sessao, sessoes
 
 # Importa a função printa_matriz e check_1 do módulo helpers
 from helpers import check_1, printa_matriz
 
+# Constantes de colunas e linhas da matriz de poltronas
+COLUNAS = 10
+LINHAS = 15
 # Cria a classe Sala que se associa com a classe Sessao
 
 
@@ -13,7 +16,7 @@ class Sala:
     def __init__(self, ocupada=False, cronograma=dict()):
         self.cronograma = cronograma
         # Cria uma matriz de poltronas com 15 linhas e 20 colunas, incialmente todas as poltronas estão livres
-        self.poltronas = [[0] * 10]*15
+        self.poltronas = [[0] * COLUNAS]*LINHAS
         self.ocupada = ocupada
         # Lista de sessões da sala
         self.sessoes = list()
@@ -116,6 +119,20 @@ class Sala:
                     sessao.print_info()
 
 
+# Exemplo de lista de salas
+sala1 = Sala()
+sala1.preencher_poltronas(["a1", "b2", "c3", "d4", "e5", "f6", "a7",
+                          "h8", "a9", "f10"])
+sala1.adicionar_sessao(sessoes[0])
+sala1.adicionar_sessao(sessoes[3])
+
+sala2 = Sala()
+sala2.preencher_poltronas(["e5", "f6", "a7", "h8", "a9", "f10"])
+sala2.adicionar_sessao(sessoes[1])
+sala2.adicionar_sessao(sessoes[2])
+
+salas = [sala1, sala2]
+'''
 # Inicio testes
 sala1 = Sala()
 sala1.preencher_poltronas(["a1", "b2", "c3", "d4", "e5", "f6", "a7",
@@ -130,3 +147,4 @@ sala1.adicionar_sessao(s2)
 sala1.get_sessao_from_cronograma()
 
 # Fim testes
+'''

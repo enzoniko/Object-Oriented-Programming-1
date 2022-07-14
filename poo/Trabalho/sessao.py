@@ -1,5 +1,4 @@
 # Importa a super classe Filme do módulo Filme
-from hashlib import shake_128
 from filme import Filme
 
 # Importa a função lista_strings_para_string do módulo helpers
@@ -80,7 +79,7 @@ class Sessao(Filme):
 
 # Exemplo de lista de sessões:
 sessoes = [Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], False, True), Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, False), Sessao("Titanic 2", [
-    "drama", "romance", "ficção científica"], ["19:00", "20:00"], False, False), Sessao("Titanic 2", ["drama", "romance", "ficção científica"], ["19:00", "20:00"], True, False)]
+    "drama", "romance", "ficção científica"], ["9:00", "14:00"], False, False), Sessao("Titanic 2", ["drama", "romance", "ficção científica"], ["9:00", "14:00"], True, False)]
 '''
 # Inicio teste
 s1 = Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, True)
