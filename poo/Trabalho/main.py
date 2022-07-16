@@ -1,5 +1,8 @@
+from http.client import OK
+from os import curdir, link
+from re import S
 from filme import Filme, filmes
-from helpers import most_empty
+from helpers import most_empty, lugares_disponiveis, lista_strings_para_string
 from sessao import Sessao, sessoes
 from sala import Sala, LINHAS, COLUNAS, salas
 
@@ -134,8 +137,51 @@ def main():
                     print("Não temos nenhuma sala com essa quantidade de poltronas!")
 
             # Printar as poltronas da sala mais vazia que passa a sessão escolhida para o usuário escolher as poltronas
+            print("Poltronas: ")
+            sala_mais_vazia = None
+            for sala in salas:
+                if lugares_disponiveis(sala.get_poltronas()) == most_empty([[sala.get_poltronas() for sessao in sala.get_sessoes(
+                ) if sessao == sessoes[numero_da_sessao - 1]] for sala in salas]):
+                    sala.printar_poltronas()
+                    sala_mais_vazia = sala
+                    break
+
             # Deixar o usuário escolher as poltronas
+            poltronas_a_preencher = input(
+                "Digite as coordenadas das poltronas que você deseja sentar separadas por um espaço: ").split()[:quantidade_ingressos]
+
             # Preencher a sala com as poltronas escolhidas pelo usuário
+            erradas = sala_mais_vazia.preencher_poltronas(
+                poltronas_a_preencher)
+
+            # Se o usuário não escolher as poltronas corretamente
+            while len(erradas) != 0:
+                if len(erradas[0]) != 0 and len(erradas[1]) == 0:
+                    letras_erradas = list(set(erradas[0]))
+                    print(
+                        f"Poltronas com letra(s) {lista_strings_para_string(letras_erradas)} não existem!")
+                elif len(erradas[1]) != 0 and len(erradas[0]) == 0:
+                    numeros_errados = list(set(erradas[1]))
+                    print(
+                        f"Poltronas com número(s) {lista_strings_para_string([str(num) for num in numeros_errados])} não existem!")
+                elif len(erradas[0]) != 0 and len(erradas[1]) != 0:
+                    letras_erradas = list(set(erradas[0]))
+                    numeros_errados = list(set(erradas[1]))
+                    print(
+                        f"Poltronas com letra(s) {lista_strings_para_string(letras_erradas)} não existem!")
+
+                    print(
+                        f"Poltronas com número(s) {lista_strings_para_string([str(num) for num in numeros_errados])} não existem!")
+
+                # Repetir o processo de escolha de poltronas até o usuário escolher as poltronas corretamente
+                poltronas_a_preencher = input(
+                    "Digite as coordenadas das poltronas que você deseja sentar separadas por um espaço: ").split()[:quantidade_ingressos]
+                erradas = sala_mais_vazia.preencher_poltronas(
+                    poltronas_a_preencher)
+
+            # Printa a sala depois de preencher as poltronas
+            sala.printar_poltronas()
+
             # ...Finalizar pagamento...
 
             break

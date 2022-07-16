@@ -45,43 +45,56 @@ class Sala:
     def preencher_poltronas(self, poltronas):
         # Lista de letras para associar letra com número da poltrona
         letras = ["a", "b", "c", "d", "e", "f", "g",
-                  "h", "i", "j", "k", "l", "m", "n", "o"]
-
+                  "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"][:len(self.get_poltronas())]
+        letras_erradas = list()
+        numeros_errados = list()
         # Pra cada poltronas na lista de poltronas a serem preenchidas
         for poltrona in poltronas:
             # Pega a letra da poltrona
             letra = poltrona[0]
+
             # Pega o número da poltrona
-            numero = int(poltrona[1:]) - 1
-            # Pega o índice da letra na lista de letras
-            indice = letras.index(letra)
-            # Faz uma cópia da linha de índice "incide" da matriz de poltronas
-            linha = self.poltronas[indice][:]
-            # Substitui o número da poltrona pelo valor 1
-            linha[numero] = 1
-            # Atualiza a linha na matriz de poltronas
-            self.poltronas[indice] = linha
+            numero = int(poltrona[1:])
+            if letra not in letras:
+                letras_erradas.append(letra)
+            if numero < 0 or numero > len(self.get_poltronas()[0]):
+                numeros_errados.append(numero)
+            if letra in letras and numero >= 0 and numero <= COLUNAS:
+                # Pega o índice da letra na lista de letras
+                indice = letras.index(letra)
+                # Faz uma cópia da linha de índice "incide" da matriz de poltronas
+                linha = self.poltronas[indice][:]
+                # Substitui o número da poltrona pelo valor 1
+                linha[numero - 1] = 1
+                # Atualiza a linha na matriz de poltronas
+                self.poltronas[indice] = linha
+
+        if len(letras_erradas) == 0 and len(numeros_errados) == 0:
+            return []
+        else:
+            return [letras_erradas, numeros_errados]
 
     def printar_poltronas(self):
         # Lista de letras para associar letra com número da poltrona
         letras = ["a", "b", "c", "d", "e", "f", "g",
-                  "h", "i", "j", "k", "l", "m", "n", "o"]
+                  "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"][:len(self.get_poltronas())]
 
         # Printa a numeração das colunas
         print(" ", end=" ")
-        for coluna in range(len(self.poltronas[0]) - 1, 0, -1):
+        for coluna in range(len(self.poltronas[0]), 0, -1):
             if coluna <= 9:
                 print(f"  {coluna}  ", end=" ")
             else:
                 print(f"  {coluna} ", end=" ")
 
         # Printa a letra da linha seguida por cada poltrona da linha
-        for linha in range(len(self.poltronas) - 1, 0, -1):
+        for linha in range(len(self.poltronas), 0, -1):
             print()
             print(letras[linha - 1], end=" ")
-            for coluna in range(len(self.poltronas[0]) - 1, 0, -1):
+            for coluna in range(len(self.poltronas[0]), 0, -1):
                 # Bota um x na poltrona se ela estiver ocupada
-                print(f"[ {check_1(self.poltronas[linha][coluna])} ]", end=" ")
+                print(
+                    f"[ {check_1(self.poltronas[linha -1][coluna - 1])} ]", end=" ")
 
         # Printa a posição da TELA
         print()
