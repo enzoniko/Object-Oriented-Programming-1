@@ -7,6 +7,7 @@ from sala import Sala, LINHAS, COLUNAS, salas
 
 
 def preencher_poltronas(sala_mais_vazia, quantidade_ingressos):
+    # sourcery skip: remove-redundant-if
     # Deixar o usuário escolher as poltronas
     poltronas_a_preencher = input(
         "Digite as coordenadas das poltronas que você deseja sentar separadas por um espaço: ").split()[:quantidade_ingressos]
@@ -19,13 +20,16 @@ def preencher_poltronas(sala_mais_vazia, quantidade_ingressos):
     while erradas != []:
         letras_erradas = list(set(erradas[0]))
         numeros_errados = list(set(erradas[1]))
+        if erradas[2] != []:
+            print(
+                f"Poltrona(s) {lista_strings_para_string(list(set(erradas[2])))} já estão ocupadas!")
         if erradas[0] != [] and erradas[1] == []:
             print(
                 f"Poltronas com letra(s) {lista_strings_para_string(letras_erradas)} não existem!")
         elif erradas[1] != [] and erradas[0] == []:
             print(
                 f"Poltronas com número(s) {lista_strings_para_string([str(num) for num in numeros_errados])} não existem!")
-        else:
+        elif erradas[0] != [] and erradas[1] != []:
             print(
                 f"Poltronas com letra(s) {lista_strings_para_string(letras_erradas)} não existem!")
 
@@ -59,16 +63,12 @@ def printar_sessoes(nome_do_filme):
     print()
     print(f"Sessões de {nome_do_filme.upper()}: ")
     print()
-    # Pra cada sessão da lista de sessões
-    for sessao in range(len(sessoes)):
-
-        # Se o nome do filme da sessão for o mesmo do filme que o usuário deseja assistir
-        if sessoes[sessao].get_nome() == nome_do_filme:
-
-            print(f"{sessao + 1}: ", end="")
-            # Mostra a sessão
-            sessoes[sessao].print_info()
-            print()
+    # Pra cada sessão da lista de sessões cujo nome do filme é o mesmo que o usuário deseja assistir
+    for sessao in range(len([sessao for sessao in sessoes if sessao.get_nome() == nome_do_filme])):
+        print(f"{sessao + 1}: ", end="")
+        # Mostra a sessão
+        sessoes[sessao].print_info()
+        print()
     print('-----------------------------------------------------')
 
 # Função que mostra a sessão escolhida e opcionalmente seus horários
@@ -101,14 +101,14 @@ def mostrar_sessao(numero_da_sessao, mostrar_horarios=False):
             print()
         print('-----------------------------------------------------')
 
-# Função que retorna a sala mais vazia dado a quantidade de lugares disponíveis na sala mais vazia
+# Função que retorna a sala mais vazia dado a quantidade de lugares disponíveis na sala mais vazia e a sessão escolhida
 
 
-def sala_mais_vazia(quantidade_lugares_disponiveis_sala_mais_vazia):
+def sala_mais_vazia(quantidade_lugares_disponiveis_sala_mais_vazia, sessao):
     # Printar as poltronas da sala mais vazia que passa a sessão escolhida para o usuário escolher as poltronas
     print("Poltronas: ")
     for sala in salas:
-        if lugares_disponiveis(sala.get_poltronas()) == quantidade_lugares_disponiveis_sala_mais_vazia:
+        if sessao in sala.get_sessoes() and lugares_disponiveis(sala.get_poltronas()) == quantidade_lugares_disponiveis_sala_mais_vazia:
             sala.printar_poltronas()
             return sala
 
@@ -134,7 +134,7 @@ def main():
 
             # Pergunta qual o número do filme que o usuário deseja
             numero_do_filme = verificador_input(
-                "filme", filmes, "in", "Opção inválida")
+                "do filme", filmes, "in", "Opção inválida")
 
             # Pega o nome do filme relacionado com o número digitado pelo usuário
             nome_do_filme = filmes[numero_do_filme - 1].get_nome()
@@ -144,14 +144,14 @@ def main():
 
             # Pergunta qual a sessão que o usuário deseja assistir
             numero_da_sessao = verificador_input(
-                "sessão", sessoes, "in", "Opção inválida")
+                "da sessão", [sessao for sessao in sessoes if sessao.get_nome() == nome_do_filme], "in", "Opção inválida")
 
             # Mostra a sessão escolhida e seus horários
             mostrar_sessao(numero_da_sessao, mostrar_horarios=True)
 
             # Pergunta qual o horário que o usuário deseja assistir
             numero_do_horario = verificador_input(
-                "horário", sessoes[numero_da_sessao - 1].get_horarios(), "in", "Opção inválida")
+                "do horário", sessoes[numero_da_sessao - 1].get_horarios(), "in", "Opção inválida")
 
             # Pega o horário relacionado com o número digitado pelo usuário
             horario = sessoes[numero_da_sessao -
@@ -164,7 +164,7 @@ def main():
             print(horario)
             print()
 
-            # Quantidade de lugares disponíveis na sala mais vazia
+            # Quantidade de lugares disponíveis na sala mais vazia que passa a sessão escolhida
             quantidade_lugares_disponiveis_sala_mais_vazia = most_empty([[sala.get_poltronas() for sessao in sala.get_sessoes(
             ) if sessao == sessoes[numero_da_sessao - 1]] for sala in salas])
 
@@ -178,8 +178,7 @@ def main():
 
             # Printar as poltronas da sala mais vazia que passa a sessão escolhida para o usuário escolher as poltronas
             sala = sala_mais_vazia(
-                quantidade_lugares_disponiveis_sala_mais_vazia)
-            sala.printar_poltronas()
+                quantidade_lugares_disponiveis_sala_mais_vazia, sessoes[numero_da_sessao - 1])
 
             # Preenche as poltronas da sala mais vazia com as poltronas escolhidas pelo usuário
             preencher_poltronas(sala, quantidade_ingressos)
@@ -188,7 +187,7 @@ def main():
             sala.printar_poltronas()
 
             # FINALIZAR PAGAMENTO
-
+            # PENSAR NUM JEITO DE CANCELAR A COMPRA, REVERTENDO O PREENCHIMENTO DAS POLTRONAS
             break
         else:
             print("Opção Invalida")

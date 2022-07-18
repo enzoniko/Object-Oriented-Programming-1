@@ -38,8 +38,13 @@ class Sala:
     def get_sessoes(self):
         return self.sessoes
 
+    # set_cronograma modifica o cronograma da sala (inutil)
     def set_cronograma(self, cronograma):
         self.cronograma = cronograma
+
+    # set_ocupada modifica se a sala está ocupada
+    def set_ocupada(self, ocupada):
+        self.ocupada = ocupada
 
     # Método que preenche a matriz de poltronas com as poltronas a serem preenchidas
     def preencher_poltronas(self, poltronas):
@@ -48,6 +53,7 @@ class Sala:
                   "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"][:len(self.get_poltronas())]
         letras_erradas = []
         numeros_errados = []
+        poltronas_indisponiveis = []
         # Pra cada poltronas na lista de poltronas a serem preenchidas
         for poltrona in poltronas:
             # Pega a letra da poltrona
@@ -57,23 +63,28 @@ class Sala:
             numero = int(poltrona[1:])
             if letra not in letras:
                 letras_erradas.append(letra)
-            if numero < 0 or numero > len(self.get_poltronas()[0]):
+            if numero <= 0 or numero > len(self.get_poltronas()[0]):
                 numeros_errados.append(numero)
-            if letra in letras and numero >= 0 and numero <= COLUNAS:
-                # Pega o índice da letra na lista de letras
-                indice = letras.index(letra)
-                # Faz uma cópia da linha de índice "incide" da matriz de poltronas
-                linha = self.poltronas[indice][:]
-                # Substitui o número da poltrona pelo valor 1
-                linha[numero - 1] = 1
-                # Atualiza a linha na matriz de poltronas
-                self.poltronas[indice] = linha
+            if letra in letras and numero <= len(self.get_poltronas()[0]) and numero > 0 and self.get_poltronas()[letras.index(letra)][numero - 1] == 1:
+                poltronas_indisponiveis.append(poltrona)
 
-        if letras_erradas or numeros_errados:
-            return [letras_erradas, numeros_errados]
+        if letras_erradas or numeros_errados or poltronas_indisponiveis:
+            return [letras_erradas, numeros_errados, poltronas_indisponiveis]
 
-        else:
-            return []
+        for poltrona in poltronas:
+            # Pega a letra da poltrona
+            letra = poltrona[0]
+            # Pega o número da poltrona
+            numero = int(poltrona[1:])
+            # Pega o índice da letra na lista de letras
+            indice = letras.index(letra)
+            # Faz uma cópia da linha de índice "incide" da matriz de poltronas
+            linha = self.poltronas[indice][:]
+            # Substitui o número da poltrona pelo valor 1
+            linha[numero - 1] = 1
+            # Atualiza a linha na matriz de poltronas
+            self.poltronas[indice] = linha
+        return []
 
     def printar_poltronas(self):
         # Lista de letras para associar letra com número da poltrona
@@ -101,10 +112,6 @@ class Sala:
         print()
         t = "TELA"
         print(t.center((int(len(self.poltronas[0])*6)) - 4))
-
-    # set_ocupada modifica se a sala está ocupada
-    def set_ocupada(self, ocupada):
-        self.ocupada = ocupada
 
     # print_info imprime os informações da sala
     def print_info(self):

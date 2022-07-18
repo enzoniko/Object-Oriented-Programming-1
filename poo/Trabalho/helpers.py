@@ -45,7 +45,7 @@ def most_empty(matrizes):
 def verificador_input(coisa, lista, condicao, mensagem_erro):
     while True:
         numero = int(
-            input(f"Digite o número de {coisa} que você deseja: "))
+            input(f"Digite o número {coisa} que você deseja: "))
         if (condicao == 'in' and numero - 1 in range(len(lista))) or (condicao == '<=' and numero <= lista[0] and numero > 0):
             return numero
         else:
