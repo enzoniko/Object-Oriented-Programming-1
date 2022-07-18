@@ -6,7 +6,7 @@ while True:
     pais = input()
 
     # Se o dicionário de traduções não tiver uma tradução para o país, printa NOT FOUND
-    if traducoes.get(pais) == None:
+    if traducoes.get(pais) is None:
         print('---NOT FOUND---')
     else:
         # Se tiver, printa a tradução

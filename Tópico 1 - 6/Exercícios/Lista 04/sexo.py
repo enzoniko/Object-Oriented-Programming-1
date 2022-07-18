@@ -1,4 +1,4 @@
 sexo = ''
-while sexo != 'M' and sexo != 'F':
+while sexo not in ['M', 'F']:
     sexo = input("Qual seu sexo? (M/F) ")
     

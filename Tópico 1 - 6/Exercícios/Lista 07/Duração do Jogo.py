@@ -5,11 +5,9 @@ def duracao(inicio, fim):
     while inicio != fim:
         if inicio == 23:
             inicio = 0
-            duracao += 1
         else:
             inicio += 1
-            duracao += 1
-       
+        duracao += 1
     return duracao
 
 inicio = int(input('Que horas o jogo começou? '))

@@ -1,6 +1,6 @@
 participantes = int(input())
-lista_de_presentes = dict()
-for i in range(participantes):
+lista_de_presentes = {}
+for _ in range(participantes):
     entrada = input().split()
     nome = entrada[0]
     presentes = [entrada[1], entrada[2], entrada[3]]

@@ -8,7 +8,7 @@ def segundos_ligado():
         if x > 0:
             soma_das_diferencas_dos_instantes += (instante - instante_anterior)
         instante_anterior = instante
-    
+
     return soma_das_diferencas_dos_instantes
 
 soma_das_diferencas_dos_instantes = segundos_ligado()

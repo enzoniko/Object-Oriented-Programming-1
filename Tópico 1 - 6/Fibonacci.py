@@ -7,9 +7,8 @@ print (y)
 while count < n - 2:
     x = x + y
     y = x + y
-    if count < n - 2:
-        print (x)
-        count += 1
+    print (x)
+    count += 1
     if count < n - 2:
         print (y)
         count += 1

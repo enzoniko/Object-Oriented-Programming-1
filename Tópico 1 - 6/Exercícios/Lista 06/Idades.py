@@ -6,7 +6,7 @@ def media_idades():
         idade = int(input("Qual a idade? "))
         if idade < 0:
             break
-        
+
         soma_idades += idade
         quantidade_idades += 1
 

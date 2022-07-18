@@ -21,14 +21,14 @@ def funcao():
             sexo_menor_salario = sexo
             idade_menor_salario = idade
 
-        
+
         if idade > maior_idade:
             maior_idade = idade
             nome_mais_velho = nome
 
         if sexo == 'F' and salario > 2000:
             quantidade_mulheres_salario_maior_2000 += 1
-        
+
         continuar = input("Deseja continuar cadastrando? [S/N]")
         if continuar.upper() == 'N':
             break

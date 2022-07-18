@@ -4,8 +4,7 @@ diferenca = y - x
 
 while diferenca < y:
     diferenca += diferenca
-else:
-    voltas = diferenca / (y - x)
+voltas = diferenca / (y - x)
 print(int(voltas))
     
     

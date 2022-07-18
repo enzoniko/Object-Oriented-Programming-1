@@ -5,8 +5,8 @@ coelhos = 0
 ratos = 0
 sapos = 0
 
-for i in range(n):
-    cobaias, tipo = [valor for valor in input().split()]
+for _ in range(n):
+    cobaias, tipo = list(input().split())
     cobaias = int(cobaias)
     total_cobaias += cobaias
 

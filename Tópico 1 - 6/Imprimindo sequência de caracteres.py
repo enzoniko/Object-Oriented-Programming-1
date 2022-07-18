@@ -2,7 +2,7 @@
 
 # Formatação utilizando o método "format"
 # Cada ocorrência de '{}' será substituída pelo correspondente valor passado no comando "format"
-hoje = "Hoje é dia {} de {} de {}".format(16, "junho", 2021)
+hoje = f'Hoje é dia {16} de {"junho"} de {2021}'
 print(hoje)
 
 # É também possível nomear os argumentos (um nome entre {}) 
@@ -10,7 +10,7 @@ print(hoje)
 print("Hoje é dia {dia} de {mes} de {ano}".format(dia=1, mes='setembro', ano=2020))
 
 # No caso de valores reais, podemos definir o número de dígitos a serem apresentadas após o ponto decimal
-print("O valor de PI é {}".format(3.14159265))
+print(f"O valor de PI é {3.14159265}")
 print("O valor de PI é {:.3f}".format(3.14159265))
 
 # Dentro de {} também é possível definir o tamanho (número de caracteres) total do campo
