@@ -1,20 +1,17 @@
 alternativas = ['A', 'B', 'C', 'D', 'E']
 
 def corretamente_preenchida(resposta):
-    respostas_preenchidas = []
-    for r in resposta:
-        if r <= 127:
-            respostas_preenchidas.append(alternativas[resposta.index(r)])
-    if len(respostas_preenchidas) == 1:
-        return respostas_preenchidas[0]
-    else:
-        return '*'
+    respostas_preenchidas = [
+        alternativas[resposta.index(r)] for r in resposta if r <= 127
+    ]
+
+    return respostas_preenchidas[0] if len(respostas_preenchidas) == 1 else '*'
         
 while True:
     questoes = int(input())
-    for q in range(questoes):
+    for _ in range(questoes):
         print(corretamente_preenchida([int(x) for x in input().split()]))
-        
+
     if questoes == 0:
         break
     

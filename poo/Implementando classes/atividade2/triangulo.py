@@ -8,7 +8,7 @@ class Triangulo:
         self.escaleno()
     
     def equilatero(self):
-        if self.a == self.b and self.b == self.c:
+        if self.a == self.b == self.c:
             print("É um triângulo equilátero")
         else:
             print("Não é um triângulo equilátero")

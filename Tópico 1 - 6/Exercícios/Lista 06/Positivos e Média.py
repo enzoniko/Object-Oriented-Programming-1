@@ -1,6 +1,6 @@
 contador_positivos = 0
 soma_positivos = 0
-for iterador in range(6):
+for _ in range(6):
     numero = float(input("Digite um número: "))
     if numero > 0:
         contador_positivos += 1

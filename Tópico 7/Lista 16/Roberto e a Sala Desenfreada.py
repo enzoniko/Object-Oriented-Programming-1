@@ -1,7 +1,7 @@
 # Função que transforma a relação, fazendo cada curso ser uma chave e cada valor uma lista de matriculas que fazem parte do curso
 def transformar_relacao(relacao):
 
-    relacao_invertida = dict()
+    relacao_invertida = {}
 
     # Pra cada matrícula na relação
     for matricula in relacao:
@@ -23,12 +23,11 @@ def transformar_relacao(relacao):
 # Pega o dicionario de matriculas
 def matriculas_cursos():
 
-    relacao = dict()
+    relacao = {}
     num_alunos = int(input())
 
     # Pra cada aluno
-    for i in range(num_alunos):
-
+    for _ in range(num_alunos):
         entrada = input().split()
 
         # Pega a matrícula
@@ -39,35 +38,31 @@ def matriculas_cursos():
 
         # Adiciona a matricula como chave e o curso como valor no dicionario de relações
         relacao[matricula] = curso
-    
+
     # Retorna o dicionario de relações transformado
     return transformar_relacao(relacao)
 
 # Calcula a quantidade de alunos por curso
 def quantidade_de_alunos_por_curso(relacao):
 
-    quantidade_de_alunos_por_curso = dict()
     intrusos = 0
 
-    # Pra cada curso
-    for curso in relacao:
+    quantidade_de_alunos_por_curso = {
+        curso: len(relacao[curso]) for curso in relacao
+    }
 
-        # Cria um dicionario com a quantidade de alunos por curso
-        quantidade_de_alunos_por_curso[curso] = len(relacao[curso])
-    
     # Pra cada curso nesse novo dicionario
-    for curso in quantidade_de_alunos_por_curso:
+    for curso, value in quantidade_de_alunos_por_curso.items():
 
         # Se o curso for EPR ou EHD
-        if curso == 'EPR' or curso == 'EHD':
+        if curso in ['EPR', 'EHD']:
             
             # Printa a quantidade de alunos por curso
-            print(f'{curso}: {quantidade_de_alunos_por_curso[curso]}') 
-        
-        # Senão, soma a quantidade de alunos por curso ao total de intrusos
+            print(f'{curso}: {value}') 
+
         else:
             intrusos += quantidade_de_alunos_por_curso[curso]
-    
+
     # Printa o total de intrusos
     print(f'INTRUSOS: {intrusos}')
 

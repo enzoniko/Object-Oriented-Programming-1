@@ -1,9 +1,6 @@
 # Início das Funções
 def media_saltos(saltos):
-    soma = 0
-    for i in range(len(saltos)):
-        soma += saltos[i]
-        
+    soma = sum(saltos[i] for i in range(len(saltos)))
     return soma/len(saltos)
 
 def maior_salto(saltos):
@@ -23,9 +20,7 @@ def menor_salto(saltos):
 def performance_atleta(nome):
     
     numeros_cardinais = ("Primeiro", "Segundo", "Terceiro", "Quarto", "Quinto")
-    saltos = []
-    for i in range(5):
-        saltos.append(float(input(f"{numeros_cardinais[i]} Salto: ")))
+    saltos = [float(input(f"{numeros_cardinais[i]} Salto: ")) for i in range(5)]
     menor = menor_salto(saltos)
     maior = maior_salto(saltos)
     saltos.remove(menor)

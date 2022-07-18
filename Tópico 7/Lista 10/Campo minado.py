@@ -1,10 +1,7 @@
 n = int(input())
-campo = []
 lista_num_minas = []
 
-for i in range(n):
-    campo.append(int(input()))
-    
+campo = [int(input()) for _ in range(n)]
 print()
 
 for i in range(n):
@@ -15,7 +12,7 @@ for i in range(n):
     else:
         num_minas = campo[i-1] + campo[i] + campo[i+1]
     lista_num_minas.append(num_minas)
-    
+
     print(lista_num_minas[i])
 
     

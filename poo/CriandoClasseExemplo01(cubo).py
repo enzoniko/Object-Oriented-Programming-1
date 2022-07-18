@@ -6,7 +6,7 @@ class Cubo:
     
     def calcula_cubo(self):
         cubo = self.x + self.x + self.x
-        return "Cubo calculado: "+ str(cubo)
+        return f"Cubo calculado: {str(cubo)}"
 
 #main
 print("oi")

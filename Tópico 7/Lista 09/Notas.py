@@ -7,10 +7,7 @@ def criar_lista_com_3_notas():
     return notas
 
 def media_notas(notas):
-    soma = 0
-    for i in range(len(notas)):
-        soma += notas[i]
-        
+    soma = sum(notas[i] for i in range(len(notas)))
     return soma/len(notas)
 
 def maior_nota(notas):

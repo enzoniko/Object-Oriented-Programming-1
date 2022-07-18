@@ -4,18 +4,15 @@ while True:
     cadastrar = input("Deseja cadastrar? [S/N] ")
     if cadastrar == 'S':
         num_pessoas = int(input("Quantas pessoas você deseja cadastrar? "))
-        for n in range(num_pessoas):
-            pessoa = []
+        for _ in range(num_pessoas):
             nome = input("Qual o nome da pessoa? ")
             idade = int(input("Qual a idade da pessoa? "))
             peso = float(input("Qual o peso da pessoa? "))
-            pessoa.append(nome)
-            pessoa.append(idade)
-            pessoa.append(peso)
+            pessoa = [nome, idade, peso]
             pessoas.append(pessoa)
-        
+
         print(f'{len(pessoas)} pessoas cadastradas')
-    
+
     else:
         maior_peso = 0
         menor_peso = 1000
@@ -33,11 +30,8 @@ while True:
                 pessoas_mais_leves.append(pessoa[0])
         print(f"Pessoa(s) mais pesada(s): {pessoas_mais_pesadas}")
         print(f"Pessoa(s) mais leves(s): {pessoas_mais_leves}")
-        
-        pessoas_acima_20_anos = []
-        for pessoa in pessoas:
-            if pessoa[1] > 20:
-                pessoas_acima_20_anos.append(pessoa)
+
+        pessoas_acima_20_anos = [pessoa for pessoa in pessoas if pessoa[1] > 20]
         print(f'{len(pessoas_acima_20_anos)} pessoas acima de 20 anos')
         for pessoa in pessoas_acima_20_anos:
             print(f'{pessoa[0]} tem {pessoa[1]} anos')

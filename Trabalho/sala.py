@@ -16,7 +16,7 @@ class Sala:
         self.poltronas = [[0]*20]*15
         self.ocupada = ocupada
         # Lista de sessões da sala
-        self.sessoes = list()
+        self.sessoes = []
 
     # REPENSAR
     def get_cronograma(self):
@@ -68,9 +68,7 @@ class Sala:
     def add_sessao(self, sessao):
 
         # Cria um dicionário chamado cronograma
-        cronograma = dict()
-        # As chaves dos dicionários são os ids das sessões e os valores são os horários das sessões
-        cronograma[sessao.id] = sessao.get_horarios()
+        cronograma = {sessao.id: sessao.get_horarios()}
         # Adiciona a sessão à lista de sessões da sala
         self.sessoes.append(sessao)
         # Atualiza o dicionário de cronograma

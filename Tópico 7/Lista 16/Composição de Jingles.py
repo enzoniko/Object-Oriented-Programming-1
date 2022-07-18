@@ -37,6 +37,6 @@ while True:
 
     if compassos == ['*']:
         break
-    
+
     # Printa a quantidade de compassos corretos
     print(quantidade_compassos_corretos(compassos))

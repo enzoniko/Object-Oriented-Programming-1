@@ -1,6 +1,6 @@
 n = int(input("Número de pessoas: "))
 soma_idades = 0
-for idoso in range(n):
+for _ in range(n):
     idade = int(input("Sua idade: "))
     soma_idades += idade
 if 0 < (soma_idades / n) <= 25:
