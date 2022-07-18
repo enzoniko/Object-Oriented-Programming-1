@@ -2,7 +2,7 @@
 
 # A função input() permite obter os dados que forem digitados via teclado
 texto = input("Digite algo: ")
-print("Texto digitado: " + texto)
+print(f"Texto digitado: {texto}")
 
 # É possível incluir um texto explicativo que é apresentado ao usuário no momento da digitação
 nome = input("Digite seu nome: ")

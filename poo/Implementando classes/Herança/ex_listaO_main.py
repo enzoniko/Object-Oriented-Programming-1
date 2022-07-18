@@ -15,16 +15,15 @@ Main possui um menu
 
 Cada funcionário é inserido em uma lista de objetos
 '''
+
 from ex_listaO_funcionario import Funcionario
 
-funcionarios = [] # lista de funcionários
 idF = 1
 
 flag=False
 
 f = Funcionario(str(idF), 'João', '123.456.789-10', 'M') # cria uma instância de Funcionário
-funcionarios.append(f)  # Adiciona o funcionário na lista
-
+funcionarios = [f]
 while True:
     print('Menu de funcionários')
     print('Escolha uma operação para realizar: ')
@@ -37,12 +36,12 @@ while True:
 
     if op == 1: # Operação 1 - Cadastrar
         print('Cadastro de funcionário')
-        
+
         idF += 1
         nome = str(input('Nome: '))
         cpf = str(input('CPF: '))
         sexo = str(input('Sexo: '))
-        
+
         f = Funcionario('', '', '', '') # cria o objeto Funcionario
         f.set_id(str(idF))
         f.set_nome(nome)
@@ -50,29 +49,29 @@ while True:
         f.set_sexo(sexo)
 
         funcionarios.append(f)  # adiciona na lista de funcionários
-        
+
     elif op == 2: # Operação 2 - Alterar (pelo ID)
         print('Alterar informação de usuário')
         idF = str(input('Digite o ID do funcionário: '))
-        
+
         for func in funcionarios:  # percorre a lista de funcionários
             if idF == func.get_id():  # busca pelo ID do funcionário a ser alterado
                 print('Digite as novas informações do usuário')
                 nome = str(input('Nome: '))
                 cpf = str(input('CPF: '))
                 sexo = str(input('Sexo: '))
-               
+
                 func.set_nome(nome) # altera os dados do funcionário
                 func.set_cpf(cpf)
                 func.set_sexo(sexo)
-        
+
     elif op == 3: # Operação 3 - Consultar
         print('Consultar funcionário')
         print('1 - Consultar pelo ID')
         print('2 - Consultar pelo nome')
         print('3 - Consultar pelo CPF')
         consulta = int(input('Escolha a forma de consulta: '))
-        
+
         if consulta == 1: # Consultar pelo ID
             c = str(input('Digite o ID: '))
             for func in funcionarios:
@@ -81,8 +80,8 @@ while True:
                     print('Nome:', func.get_nome())
                     print('CPF:', func.get_cpf())
                     print('Sexo:', func.get_sexo())
-                
-                    
+
+
         elif consulta == 2: # Consultar pelo Nome
             c = str(input('Digite o nome: '))
             for func in funcionarios:
@@ -91,7 +90,7 @@ while True:
                     print('Nome:', func.get_nome())
                     print('CPF:', func.get_cpf())
                     print('Sexo:', func.get_sexo())
-            
+
         else:  # consultar pelo CPF
             c = str(input('Digite o CPF: '))
             for func in funcionarios:
@@ -100,11 +99,11 @@ while True:
                     print('Nome:', func.get_nome())
                     print('CPF:', func.get_cpf())
                     print('Sexo:', func.get_sexo())
-                    
+
     elif op == 4: # Excluir funcionário (pelo ID)
         print('Excluir funcionário')
         idF = str(input('Digite o ID do funcionário: '))
-        
+
         for i, j in enumerate(funcionarios): # percorre a lista de funcionários
             if idF == j.get_id():
                 funcionarios.pop(i)

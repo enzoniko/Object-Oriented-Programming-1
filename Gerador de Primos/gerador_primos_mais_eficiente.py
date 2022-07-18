@@ -2,40 +2,27 @@ import time
 
 # Função recursiva de MDC
 def mdc(a, b):
-    if b == 0:
-        return a
-    else:
-        return mdc(b, a%b)
+    return a if b == 0 else mdc(b, a%b)
     
 primes = []
 def primo(p):
 
-    primo = False
-
-    # Teorema de Fermat
-    for a in range(1, p):
-        if mdc(a, p) == 1 and (a**(p - 1)) % p == 1:
-            primo = True
-            break
+    primo = any(mdc(a, p) == 1 and (a**(p - 1)) % p == 1 for a in range(1, p))
     # Verificação de pseudoprimos
-    if primo == True:
-        multiplos = 0
-        for x in range(2, p):
-            if p % x == 0:
-                multiplos += 1
+    if primo:
+        multiplos = sum(p % x == 0 for x in range(2, p))
         if multiplos != 0:
             primo = False
-        
+
     return primo
 
 def gerador_primos(n):
-    prime = [True for i in range(n+1)]
+    prime = [True for _ in range(n+1)]
     p = 2
-    while(p * p <= n):
-        if (p % 2 != 0 or p == 2):
-            if primo(p):
-                for i in range(p * p, n + 1, p):
-                    prime[i] = False
+    while p**2 <= n:
+        if ((p % 2 != 0 or p == 2)) and primo(p):
+            for i in range(p**2, n + 1, p):
+                prime[i] = False
         p += 1
 
     for p in range(2, n):

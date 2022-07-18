@@ -5,5 +5,4 @@ count = 1
 while n != x:
    n = int(input("Escolha um número: "))
    count += 1
-else:
-    print (f"Você acertou com {count} tentativas!")
+print (f"Você acertou com {count} tentativas!")

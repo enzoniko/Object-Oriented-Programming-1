@@ -1,13 +1,13 @@
 melhor_nota = 0
 soma_medias = 0
-for aluno in range(0,5):
+for _ in range(5):
     nome = input("Nome: ")
     nota = float(input("Média geral: "))
     soma_medias += nota
     if nota > melhor_nota:
         melhor_nota = nota
         melhor_nome = nome
-   
+
 
 print("Média dos alunos: ", soma_medias / 5)
 print (f"{melhor_nome} teve a melhor nota.")

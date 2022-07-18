@@ -1,6 +1,6 @@
 quantidade_par = 0
 quantidade_impar = 0
-for x in range(10):
+for _ in range(10):
     inteiro = int(input("Número: "))
     if inteiro % 2 == 0:
         quantidade_par += 1

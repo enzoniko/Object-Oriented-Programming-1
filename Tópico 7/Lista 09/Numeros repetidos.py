@@ -1,6 +1,6 @@
 n = int(input("Número de elementos: "))
 lista = []
-for i in range(n):
+for _ in range(n):
     num = int(input("Digite um número: "))
     lista.append(num)
 
