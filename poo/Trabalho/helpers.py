@@ -13,32 +13,43 @@ def printa_matriz(matriz):
 
 
 def check_1(n):
-    if n == 1:
-        return "X"
-    else:
-        return " "
+    return "X" if n == 1 else " "
+
+# Função lugares_disponiveis: recebe uma matriz e retorna o número de lugares disponíveis na matriz
 
 
 def lugares_disponiveis(matriz):
-    quantidade_de_lugares_disponiveis = 0
-    for linha in matriz:
-        quantidade_de_lugares_disponiveis += linha.count(0)
+    return sum(linha.count(0) for linha in matriz)
 
-    return quantidade_de_lugares_disponiveis
+# Função most_empty: recebe uma lista de salas e retorna a sala com mais lugares disponíveis
 
 
 def most_empty(matrizes):
     quantidade_de_lugares_disponiveis_da_matriz_mais_vazia = 0
     for i in matrizes:
         for matriz in i:
-            if matriz != []:
-                if quantidade_de_lugares_disponiveis_da_matriz_mais_vazia == 0:
-                    quantidade_de_lugares_disponiveis_da_matriz_mais_vazia = lugares_disponiveis(
-                        matriz)
-                elif lugares_disponiveis(matriz) > quantidade_de_lugares_disponiveis_da_matriz_mais_vazia:
-                    quantidade_de_lugares_disponiveis_da_matriz_mais_vazia = lugares_disponiveis(
-                        matriz)
+            if matriz != [] and (quantidade_de_lugares_disponiveis_da_matriz_mais_vazia == 0 or quantidade_de_lugares_disponiveis_da_matriz_mais_vazia != 0 and lugares_disponiveis(matriz) > quantidade_de_lugares_disponiveis_da_matriz_mais_vazia):
+                quantidade_de_lugares_disponiveis_da_matriz_mais_vazia = lugares_disponiveis(
+                    matriz)
     return quantidade_de_lugares_disponiveis_da_matriz_mais_vazia
+
+# Função que retorna a input do usuário só quando ela está correta, e pede a input novamente enquanto ele não a digitar corretamente
+
+# Parametros:
+# coisa: é uma string da coisa que o usuário deve digitar,
+# lista: é a lista usada para avaliar a input do usuário,
+# condicao: que tipo de comparação (<= ou in),
+# mensagem_erro: é a mensagem de erro que será exibida caso a input do usuário não seja correta
+
+
+def verificador_input(coisa, lista, condicao, mensagem_erro):
+    while True:
+        numero = int(
+            input(f"Digite o número de {coisa} que você deseja: "))
+        if (condicao == 'in' and numero - 1 in range(len(lista))) or (condicao == '<=' and numero <= lista[0] and numero > 0):
+            return numero
+        else:
+            print(mensagem_erro)
 
 
 '''

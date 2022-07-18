@@ -19,7 +19,7 @@ class Sala:
         self.poltronas = [[0] * COLUNAS]*LINHAS
         self.ocupada = ocupada
         # Lista de sessões da sala
-        self.sessoes = list()
+        self.sessoes = []
 
     # getters e setters:
 
@@ -46,8 +46,8 @@ class Sala:
         # Lista de letras para associar letra com número da poltrona
         letras = ["a", "b", "c", "d", "e", "f", "g",
                   "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"][:len(self.get_poltronas())]
-        letras_erradas = list()
-        numeros_errados = list()
+        letras_erradas = []
+        numeros_errados = []
         # Pra cada poltronas na lista de poltronas a serem preenchidas
         for poltrona in poltronas:
             # Pega a letra da poltrona
@@ -69,10 +69,11 @@ class Sala:
                 # Atualiza a linha na matriz de poltronas
                 self.poltronas[indice] = linha
 
-        if len(letras_erradas) == 0 and len(numeros_errados) == 0:
-            return []
-        else:
+        if letras_erradas or numeros_errados:
             return [letras_erradas, numeros_errados]
+
+        else:
+            return []
 
     def printar_poltronas(self):
         # Lista de letras para associar letra com número da poltrona
@@ -109,7 +110,7 @@ class Sala:
     def print_info(self):
         print(f"Ocupada: {self.ocupada}")
         print(f"Cronograma: {self.cronograma}")
-        print(f"Poltronas:")
+        print("Poltronas:")
         printa_matriz(self.poltronas)
         print(f"Sessões: {self.sessoes}")
 
