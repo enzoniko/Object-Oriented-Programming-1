@@ -33,15 +33,8 @@ def most_empty(matrizes):
                     matriz)
     return quantidade_de_lugares_disponiveis_da_matriz_mais_vazia
 
-# Função que retorna a input do usuário só quando ela está correta, e pede a input novamente enquanto ele não a digitar corretamente
 
-# Parametros:
-# coisa: é uma string da coisa que o usuário deve digitar,
-# lista: é a lista usada para avaliar a input do usuário,
-# condicao: que tipo de comparação (<= ou in),
-# mensagem_erro: é a mensagem de erro que será exibida caso a input do usuário não seja correta
-
-
+# DEIXAR PRA O AMOR DA MINHA VIDA EXPLICAR A FUNCAO
 def verificador_input(coisa, lista, condicao, mensagem_erro):
     while True:
         numero = int(

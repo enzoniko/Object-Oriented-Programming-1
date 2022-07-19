@@ -2,12 +2,16 @@ from filme import Filme, filmes
 from helpers import most_empty, lugares_disponiveis, lista_strings_para_string, verificador_input
 from sessao import Sessao, sessoes
 from sala import Sala, LINHAS, COLUNAS, salas
+from pagamento import Pagamento
+# Função que preenche as poltronas de uma sala
+
+# Lista de pagamentos (usar para mostrar o total faturado para o administrador)
+pagamentos = []
 
 # Função que preenche as poltronas de uma sala
 
 
 def preencher_poltronas(sala_mais_vazia, quantidade_ingressos):
-    # sourcery skip: remove-redundant-if
     # Deixar o usuário escolher as poltronas
     poltronas_a_preencher = input(
         "Digite as coordenadas das poltronas que você deseja sentar separadas por um espaço: ").split()[:quantidade_ingressos]
@@ -41,6 +45,9 @@ def preencher_poltronas(sala_mais_vazia, quantidade_ingressos):
             "Digite as coordenadas das poltronas que você deseja sentar separadas por um espaço: ").split()[:quantidade_ingressos]
         erradas = sala_mais_vazia.preencher_poltronas(
             poltronas_a_preencher)
+
+    # Retornar a lista de poltronas que o usuário escolheu
+    return poltronas_a_preencher
 
 # Função que mostra os filmes disponíveis
 
@@ -112,6 +119,21 @@ def sala_mais_vazia(quantidade_lugares_disponiveis_sala_mais_vazia, sessao):
             sala.printar_poltronas()
             return sala
 
+# Função que printa o comprovante de compra
+
+
+def comprovante(numero_da_sessao, horario, poltronas, pagamento):
+    print()
+    print("Comprovante de compra: ")
+    # Mostra a sessão
+    mostrar_sessao(numero_da_sessao)
+    # Mostra o horário
+    print(horario)
+    # Mostra as poltronas
+    print(f"Poltronas escolhidas: {lista_strings_para_string(poltronas)}")
+    # Mostra o pagamento
+    pagamento.print_info()
+    print("-----------------------------------------------------")
 # Função principal do programa
 
 
@@ -124,7 +146,7 @@ def main():
 
         # Se ele for pede confirmação por senha, e mostra o menu para administrador
         if is_adm == "S":
-            print("Bem vindo administrador")
+            # FAZER AS FUNÇÕES DE ADMINISTRADOR
             break
 
         # Se ele não for administrador, mostra o menu para usuário
@@ -169,11 +191,11 @@ def main():
             ) if sessao == sessoes[numero_da_sessao - 1]] for sala in salas])
 
             # Pergunta quantos ingressos o usuário deseja comprar
-            quantidade_ingressos = verificador_input("ingressos", [
+            quantidade_ingressos = verificador_input("de ingressos", [
                                                      quantidade_lugares_disponiveis_sala_mais_vazia], "<=", "Não temos nenhuma sala com essa quantidade de poltronas!")
 
             # Pergunta quantos desses ingressos são meia entrada
-            quantidade_meias = verificador_input("meias entradas", [
+            quantidade_meias = verificador_input("de meias entradas", [
                                                  quantidade_ingressos], "<=", "Quantidade de meias não pode ser maior que a quantidade de ingressos")
 
             # Printar as poltronas da sala mais vazia que passa a sessão escolhida para o usuário escolher as poltronas
@@ -181,17 +203,64 @@ def main():
                 quantidade_lugares_disponiveis_sala_mais_vazia, sessoes[numero_da_sessao - 1])
 
             # Preenche as poltronas da sala mais vazia com as poltronas escolhidas pelo usuário
-            preencher_poltronas(sala, quantidade_ingressos)
+            poltronas_escolhidas = preencher_poltronas(
+                sala, quantidade_ingressos)
 
             # Printa a sala depois de preencher as poltronas
             sala.printar_poltronas()
+            print("-----------------------------------------------------")
 
             # FINALIZAR PAGAMENTO
-            # PENSAR NUM JEITO DE CANCELAR A COMPRA, REVERTENDO O PREENCHIMENTO DAS POLTRONAS
+            # Inicia o pagamento
+            pagamento = Pagamento(quantidade_ingressos, quantidade_meias)
+            # Mostrar o preço total
+            print(f"Preço total: R$ {pagamento.get_valor()}")
+            # Pergunta se o usuário deseja pagar com crédito, dinheiro ou débito
+            print("Forma de pagamento:\n1 - Crédito\n2 - Débito\n3 - Dinheiro")
+            # Formas de pagamento
+            formas = ["Crédito", "Débito", "Dinheiro"]
+            # Pega a forma que o usuário deseja pagar
+            forma = verificador_input(
+                "da forma de pagamento", formas, "in", "Opção inválida")
+            # Modificia a forma de pagamento do pagamento
+            pagamento.set_forma(formas[forma - 1])
+
+            while True:
+                # Pergunta pro usuário se ele deseja confirmar a compra
+                confirmar = input("Confirmar compra? (S/N) ").upper()
+
+                # Se ele confirmar, mostra o pagamento
+                if confirmar == "S":
+                    # Pagamento realizado com sucesso!
+                    print("Pagamento realizado com sucesso!")
+
+                    # Comprovante do pagamento
+                    comprovante(numero_da_sessao, horario,
+                                poltronas_escolhidas, pagamento)
+
+                    # Adiciona o pagamento na lista de pagamentos
+                    pagamentos.append(pagamento)
+                    break
+
+                # Se ele não confirmar, pergunta se ele quer cancelar a compra
+                cancelar = input("Deseja cancelar a compra? (S/N) ").upper()
+
+                # Se ele quer cancelar
+                if cancelar == "S":
+                    # Cancela o pagamento
+                    print("Compra cancelada!")
+                    # Esvazia as poltronas escolhidas pelo usuário
+                    sala.esvaziar_poltronas(poltronas_escolhidas)
+                    # Printa a sala depois de esvaziar as poltronas
+                    sala.printar_poltronas()
+                    print("-----------------------------------------------------")
+                    break
+
             break
         else:
             print("Opção Invalida")
 
 
+# Chama a função main no início do programa
 if __name__ == '__main__':
     main()

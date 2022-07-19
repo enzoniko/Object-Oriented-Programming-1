@@ -7,6 +7,11 @@ from helpers import check_1, printa_matriz
 # Constantes de colunas e linhas da matriz de poltronas
 COLUNAS = 10
 LINHAS = 15
+
+# Lista de letras para associar letra com número da poltrona
+letras = ["a", "b", "c", "d", "e", "f", "g",
+          "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"][:LINHAS]
+
 # Cria a classe Sala que se associa com a classe Sessao
 
 
@@ -48,17 +53,17 @@ class Sala:
 
     # Método que preenche a matriz de poltronas com as poltronas a serem preenchidas
     def preencher_poltronas(self, poltronas):
-        # Lista de letras para associar letra com número da poltrona
-        letras = ["a", "b", "c", "d", "e", "f", "g",
-                  "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"][:len(self.get_poltronas())]
+
+        # Lista de letras erradas
         letras_erradas = []
+        # Lista de números errados
         numeros_errados = []
+        # Lista de poltronas indisponiveis
         poltronas_indisponiveis = []
         # Pra cada poltronas na lista de poltronas a serem preenchidas
         for poltrona in poltronas:
             # Pega a letra da poltrona
             letra = poltrona[0]
-
             # Pega o número da poltrona
             numero = int(poltrona[1:])
             if letra not in letras:
@@ -86,11 +91,25 @@ class Sala:
             self.poltronas[indice] = linha
         return []
 
-    def printar_poltronas(self):
-        # Lista de letras para associar letra com número da poltrona
-        letras = ["a", "b", "c", "d", "e", "f", "g",
-                  "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"][:len(self.get_poltronas())]
+    # Método que remove da matriz de poltronas as poltronas a serem removidas
+    def esvaziar_poltronas(self, poltronas):
 
+        # Pra cada poltronas na lista de poltronas a serem removidas
+        for poltrona in poltronas:
+            # Pega a letra da poltrona
+            letra = poltrona[0]
+            # Pega o número da poltrona
+            numero = int(poltrona[1:])
+            # Pega o índice da letra na lista de letras
+            indice = letras.index(letra)
+            # Faz uma cópia da linha de índice "incide" da matriz de poltronas
+            linha = self.poltronas[indice][:]
+            # Substitui o número da poltrona pelo valor 0
+            linha[numero - 1] = 0
+            # Atualiza a linha na matriz de poltronas
+            self.poltronas[indice] = linha
+
+    def printar_poltronas(self):
         # Printa a numeração das colunas
         print(" ", end=" ")
         for coluna in range(len(self.poltronas[0]), 0, -1):
