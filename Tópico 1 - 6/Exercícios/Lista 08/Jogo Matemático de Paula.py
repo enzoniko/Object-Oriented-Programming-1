@@ -1,5 +1,5 @@
 def jogo_paula(sequencia):
-    
+
     digito_1 = int(sequencia[0])
     letra = sequencia[1]
     digito_2 = int(sequencia[2])

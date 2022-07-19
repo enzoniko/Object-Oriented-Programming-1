@@ -33,7 +33,7 @@ def preencher_poltronas(sala_mais_vazia, quantidade_ingressos):
         elif erradas[1] != [] and erradas[0] == []:
             print(
                 f"Poltronas com número(s) {lista_strings_para_string([str(num) for num in numeros_errados])} não existem!")
-        elif erradas[0] != [] and erradas[1] != []:
+        elif erradas[0] != []:
             print(
                 f"Poltronas com letra(s) {lista_strings_para_string(letras_erradas)} não existem!")
 
