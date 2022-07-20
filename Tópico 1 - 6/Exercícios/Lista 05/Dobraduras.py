@@ -1,7 +1,7 @@
 testes = 1
 
 while True:
-    
+
     base_anterior = 2
 
     num_dobras = int(input("Quantas dobras foram feitas no papel? "))

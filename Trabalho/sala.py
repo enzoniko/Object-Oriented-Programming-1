@@ -68,9 +68,19 @@ class Sala:
             # Caso as poltronas sejam inválidas adiciona às listas de erradas
             if letra not in letras:
                 letras_erradas.append(letra)
-            if numero <= 0 or numero > len(self.get_cronograma()[id + " " + horario][0]):
+            if numero <= 0 or numero > len(
+                self.get_cronograma()[f"{id} {horario}"][0]
+            ):
                 numeros_errados.append(numero)
-            if letra in letras and numero <= len(self.get_cronograma()[id + " " + horario][0]) and numero > 0 and self.get_cronograma()[id + " " + horario][letras.index(letra)][numero - 1] == 1:
+            if (
+                letra in letras
+                and numero <= len(self.get_cronograma()[f"{id} {horario}"][0])
+                and numero > 0
+                and self.get_cronograma()[f"{id} {horario}"][letras.index(letra)][
+                    numero - 1
+                ]
+                == 1
+            ):
                 poltronas_indisponiveis.append(poltrona)
 
         # Caso as poltronas sejam inválidas
@@ -88,11 +98,11 @@ class Sala:
             # Pega o índice da letra na lista de letras
             indice = letras.index(letra)
             # Faz uma cópia da linha de índice "incide" da matriz de poltronas
-            linha = self.get_cronograma()[id + " " + horario][indice][:]
+            linha = self.get_cronograma()[f"{id} {horario}"][indice][:]
             # Substitui o número da poltrona pelo valor 1
             linha[numero - 1] = 1
             # Atualiza a linha na matriz de poltronas
-            self.get_cronograma()[id + " " + horario][indice] = linha
+            self.get_cronograma()[f"{id} {horario}"][indice] = linha
 
         # Retorna nenhuma lista de erradas
         return []
@@ -109,35 +119,37 @@ class Sala:
             # Pega o índice da letra na lista de letras
             indice = letras.index(letra)
             # Faz uma cópia da linha de índice "incide" da matriz de poltronas
-            linha = self.get_cronograma()[id + " " + horario][indice][:]
+            linha = self.get_cronograma()[f"{id} {horario}"][indice][:]
             # Substitui o número da poltrona pelo valor 0
             linha[numero - 1] = 0
             # Atualiza a linha na matriz de poltronas
-            self.get_cronograma()[id + " " + horario][indice] = linha
+            self.get_cronograma()[f"{id} {horario}"][indice] = linha
 
     def printar_poltronas(self, id, horario):
         # Printa a numeração das colunas
         print(" ", end=" ")
-        for coluna in range(len(self.get_cronograma()[id + " " + horario][0]), 0, -1):
+        for coluna in range(len(self.get_cronograma()[f"{id} {horario}"][0]), 0, -1):
             if coluna <= 9:
                 print(f"  {coluna}  ", end=" ")
             else:
                 print(f"  {coluna} ", end=" ")
 
         # Printa a letra da linha seguida por cada poltrona da linha
-        for linha in range(len(self.get_cronograma()[id + " " + horario]), 0, -1):
+        for linha in range(len(self.get_cronograma()[f"{id} {horario}"]), 0, -1):
             print()
             print(letras[linha - 1], end=" ")
-            for coluna in range(len(self.get_cronograma()[id + " " + horario][0]), 0, -1):
+            for coluna in range(len(self.get_cronograma()[f"{id} {horario}"][0]), 0, -1):
                 # Bota um x na poltrona se ela estiver ocupada
                 print(
-                    f"[ {check_1(self.get_cronograma()[id +' '+ horario][linha -1][coluna - 1])} ]", end=" ")
+                    f"[ {check_1(self.get_cronograma()[f'{id} {horario}'][linha -1][coluna - 1])} ]",
+                    end=" ",
+                )
+
 
         # Printa a posição da TELA
         print()
         t = "TELA"
-        print(
-            t.center((int(len(self.get_cronograma()[id + " " + horario][0])*6)) - 4))
+        print(t.center(int(len(self.get_cronograma()[f"{id} {horario}"][0]) * 6) - 4))
 
     # print_info imprime os informações do cronograma da sala
     def print_info(self):
@@ -170,8 +182,7 @@ class Sala:
         for horario in sessao.get_horarios():
 
             # Adiciona uma matriz de poltronas vazias no cronograma respectivo ao horário da sessão
-            self.cronograma[sessao.get_id() + " " +
-                            horario] = self.poltronas[:]
+            self.cronograma[(f"{sessao.get_id()} " + horario)] = self.poltronas[:]
 
         # Adiciona a sessão à lista de sessões
         self.sessoes.append(sessao)
@@ -183,9 +194,9 @@ class Sala:
         # Pra cada horário da sessão
         for horario in sessao.get_horarios():
             # Se a sessão e seu respectivo horário estiverem no cronograma
-            if (sessao.get_id() + " " + horario) in self.cronograma:
+            if f"{sessao.get_id()} {horario}" in self.cronograma:
                 # Remove a matriz de poltronas do cronograma
-                del self.cronograma[sessao.get_id() + " " + horario]
+                del self.cronograma[f"{sessao.get_id()} {horario}"]
 
         # Remove a sessão da lista de sessões
         if sessao in self.sessoes:
