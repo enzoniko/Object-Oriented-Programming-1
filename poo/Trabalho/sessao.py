@@ -33,7 +33,7 @@ class Sessao(Filme):
 
     # get_id retorna o id da sessão
     def get_id(self):
-        return self.id
+        return str(self.id)
 
     # set_legenda modifica se a sessão é legendada
     def set_legenda(self, legenda):

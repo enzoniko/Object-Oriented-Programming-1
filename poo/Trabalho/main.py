@@ -15,14 +15,14 @@ filmes = []
 # Função que preenche as poltronas de uma sala
 
 
-def preencher_poltronas(sala_mais_vazia, quantidade_ingressos):
+def preencher_poltronas(sala_mais_vazia, quantidade_ingressos, id, horario):
     # Deixar o usuário escolher as poltronas
     poltronas_a_preencher = input(
         "Digite as coordenadas das poltronas que você deseja sentar separadas por um espaço: ").split()[:quantidade_ingressos]
 
     # Preencher a sala com as poltronas escolhidas pelo usuário
     erradas = sala_mais_vazia.preencher_poltronas(
-        poltronas_a_preencher)
+        poltronas_a_preencher, id, horario)
 
     # Se o usuário não escolher as poltronas corretamente
     while erradas != []:
@@ -52,7 +52,7 @@ def preencher_poltronas(sala_mais_vazia, quantidade_ingressos):
         poltronas_a_preencher = input(
             "Digite as coordenadas das poltronas que você deseja sentar separadas por um espaço: ").split()[:quantidade_ingressos]
         erradas = sala_mais_vazia.preencher_poltronas(
-            poltronas_a_preencher)
+            poltronas_a_preencher, id, horario)
 
     # Retornar a lista de poltronas que o usuário escolheu
     return poltronas_a_preencher
@@ -125,9 +125,10 @@ def sala_mais_vazia(quantidade_lugares_disponiveis_sala_mais_vazia, sessao):
     # Printar as poltronas da sala mais vazia que passa a sessão escolhida para o usuário escolher as poltronas
     print("Poltronas: ")
     for sala in salas:
-        if sessao in sala.get_sessoes() and lugares_disponiveis(sala.get_poltronas()) == quantidade_lugares_disponiveis_sala_mais_vazia:
-            sala.printar_poltronas()
-            return sala
+        for horario in sessao.get_horarios():
+            if sessao in sala.get_sessoes() and lugares_disponiveis(sala.get_cronograma()[sessao.get_id() + " " + horario]) == quantidade_lugares_disponiveis_sala_mais_vazia:
+                sala.printar_poltronas(sessao.get_id(), horario)
+                return sala
 
 # Função que printa o comprovante de compra
 
@@ -220,7 +221,11 @@ def excluir_sessao():
     if input("Deseja excluir a sessão? (S/N) ").upper() == 'S':
         for sala in salas:
             sala.remover_sessao(sessoes[numero_da_sessao - 1])
+
+        filmes.pop(filmes.index([filme for filme in filmes if filme.get_nome(
+        ) == sessoes[numero_da_sessao - 1].get_nome()][0]))
         sessoes.pop(numero_da_sessao - 1)
+
     else:
         return
 
@@ -237,7 +242,66 @@ def adicionar_sessao():
     salas[numero_da_sala - 1].adicionar_sessao(sessoes[-1])
     filmes.append(Filme(sessoes[-1].get_nome(), sessoes[-1].get_generos()))
 
+# Função do pagamento
+
+
+def pagamento(quantidade_ingressos, quantidade_meias, numero_da_sessao, horario, poltronas_escolhidas, sala):
+    # Inicia o pagamento
+    pagamento = Pagamento(quantidade_ingressos, quantidade_meias)
+    # Mostrar o preço total
+    print(f"Preço total: R$ {pagamento.get_valor()}")
+    # Pergunta se o usuário deseja pagar com crédito, dinheiro ou débito
+    print("Forma de pagamento:\n1 - Crédito\n2 - Débito\n3 - Dinheiro")
+    # Formas de pagamento
+    formas = ["Crédito", "Débito", "Dinheiro"]
+    # Pega a forma que o usuário deseja pagar
+    forma = verificador_input(
+        "da forma de pagamento", formas, "in", "Opção inválida")
+    # Modificia a forma de pagamento do pagamento
+    pagamento.set_forma(formas[forma - 1])
+
+    while True:
+        # Pergunta pro usuário se ele deseja confirmar a compra
+        confirmar = input("Confirmar compra? (S/N) ").upper()
+
+        # Se ele confirmar, mostra o pagamento
+        if confirmar == "S":
+            # Pagamento realizado com sucesso!
+            print("Pagamento realizado com sucesso!")
+
+            # Comprovante do pagamento
+            comprovante(numero_da_sessao, horario,
+                        poltronas_escolhidas, pagamento)
+
+            # Adiciona o pagamento na lista de pagamentos
+            pagamentos.append(pagamento)
+            break
+
+        # Se ele não confirmar, pergunta se ele quer cancelar a compra
+        cancelar = input(
+            "Deseja cancelar a compra? (S/N) ").upper()
+
+        # Se ele quer cancelar
+        if cancelar == "S":
+            # Cancela o pagamento
+            print("Compra cancelada!")
+            # Esvazia as poltronas escolhidas pelo usuário
+            sala.esvaziar_poltronas(
+                poltronas_escolhidas, sessoes[numero_da_sessao - 1].get_id(), horario)
+            # Printa a sala depois de esvaziar as poltronas
+            sala.printar_poltronas(
+                sessoes[numero_da_sessao - 1].get_id(), horario)
+            print("-----------------------------------------------------")
+            break
+
 # Função que calcula e printa a fatura atual
+
+
+def mostrar_cronograma_de_uma_sala():
+    # DEIXAR O ADMIN ESCOLHER UMA SALA
+    # PRA CADA ELEMENTO SESSAO DO CRONOGRAMA
+    # PRA CADA HORARIO DE CADA SESSAO
+    # MOSTRAR AS POLTRONAS
 
 
 def total_faturado():
@@ -275,7 +339,8 @@ def admin():
     print("3: Adicionar sessão")
     print("4: Excluir sessão")
     print("5: Consultar fatura atual")
-    print("6: Sair")
+    print("6: Mostrar cronograma de uma sala")
+    print("7: Sair")
 
     # Verifica se a opção escolhid existe, se não, então é printado um aviso
     op = verificador_input("da opção", list(
@@ -301,9 +366,10 @@ def admin():
     elif op == 5:
         # Função que calcula e printa a fatura atual
         total_faturado()
-    # Sair
     elif op == 6:
-        senha = ''
+        mostrar_cronograma_de_uma_sala()
+    # Sair
+    elif op == 7:
         return ['', input("Voce é administrador? (S/N) ").upper()]
     return ['admin', 'S']
 
@@ -349,7 +415,7 @@ def usuario():
     print()
 
     # Quantidade de lugares disponíveis na sala mais vazia que passa a sessão escolhida
-    quantidade_lugares_disponiveis_sala_mais_vazia = most_empty([[sala.get_poltronas() for sessao in sala.get_sessoes(
+    quantidade_lugares_disponiveis_sala_mais_vazia = most_empty([[sala.get_cronograma()[sessoes[numero_da_sessao - 1].get_id() + " " + horario] for sessao in sala.get_sessoes(
     ) if sessao == sessoes[numero_da_sessao - 1]] for sala in salas])
 
     # Pergunta quantos ingressos o usuário deseja comprar
@@ -366,12 +432,13 @@ def usuario():
 
     # Preenche as poltronas da sala mais vazia com as poltronas escolhidas pelo usuário
     poltronas_escolhidas = preencher_poltronas(
-        sala, quantidade_ingressos)
+        sala, quantidade_ingressos, sessoes[numero_da_sessao - 1].get_id(), horario)
 
     # Printa a sala depois de preencher as poltronas
-    sala.printar_poltronas()
+    sala.printar_poltronas(sessoes[numero_da_sessao - 1].get_id(), horario)
     print("-----------------------------------------------------")
 
+    # Chama a função pagamento
     pagamento(quantidade_ingressos, quantidade_meias,
               numero_da_sessao, horario, poltronas_escolhidas, sala)
 
@@ -379,53 +446,7 @@ def usuario():
 
     return verificador_input("da opção (Comprar ou Sair)", [0, 0], 'in', 'Opção inválida')
 
-
-def pagamento(quantidade_ingressos, quantidade_meias, numero_da_sessao, horario, poltronas_escolhidas, sala):
-    # Inicia o pagamento
-    pagamento = Pagamento(quantidade_ingressos, quantidade_meias)
-    # Mostrar o preço total
-    print(f"Preço total: R$ {pagamento.get_valor()}")
-    # Pergunta se o usuário deseja pagar com crédito, dinheiro ou débito
-    print("Forma de pagamento:\n1 - Crédito\n2 - Débito\n3 - Dinheiro")
-    # Formas de pagamento
-    formas = ["Crédito", "Débito", "Dinheiro"]
-    # Pega a forma que o usuário deseja pagar
-    forma = verificador_input(
-        "da forma de pagamento", formas, "in", "Opção inválida")
-    # Modificia a forma de pagamento do pagamento
-    pagamento.set_forma(formas[forma - 1])
-
-    while True:
-        # Pergunta pro usuário se ele deseja confirmar a compra
-        confirmar = input("Confirmar compra? (S/N) ").upper()
-
-        # Se ele confirmar, mostra o pagamento
-        if confirmar == "S":
-            # Pagamento realizado com sucesso!
-            print("Pagamento realizado com sucesso!")
-
-            # Comprovante do pagamento
-            comprovante(numero_da_sessao, horario,
-                        poltronas_escolhidas, pagamento)
-
-            # Adiciona o pagamento na lista de pagamentos
-            pagamentos.append(pagamento)
-            break
-
-        # Se ele não confirmar, pergunta se ele quer cancelar a compra
-        cancelar = input(
-            "Deseja cancelar a compra? (S/N) ").upper()
-
-        # Se ele quer cancelar
-        if cancelar == "S":
-            # Cancela o pagamento
-            print("Compra cancelada!")
-            # Esvazia as poltronas escolhidas pelo usuário
-            sala.esvaziar_poltronas(poltronas_escolhidas)
-            # Printa a sala depois de esvaziar as poltronas
-            sala.printar_poltronas()
-            print("-----------------------------------------------------")
-            break
+# Função main
 
 
 def main():
@@ -451,9 +472,10 @@ def main():
 
             if senha == "0":
                 is_adm = input("Voce é administrador? (S/N) ").upper()
-
+        # Se for um usuario
         elif is_adm == "N":
             while True:
+                # Entra na função do usuario
                 encerrar = usuario()
                 if encerrar == 1:
                     continue

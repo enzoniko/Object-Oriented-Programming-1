@@ -51,7 +51,7 @@ class Sala:
         self.ocupada = ocupada
 
     # Método que preenche a matriz de poltronas com as poltronas a serem preenchidas
-    def preencher_poltronas(self, poltronas):
+    def preencher_poltronas(self, poltronas, id, horario):
 
         # Lista de letras erradas
         letras_erradas = []
@@ -67,9 +67,9 @@ class Sala:
             numero = int(poltrona[1:])
             if letra not in letras:
                 letras_erradas.append(letra)
-            if numero <= 0 or numero > len(self.get_poltronas()[0]):
+            if numero <= 0 or numero > len(self.get_cronograma()[id + " " + horario][0]):
                 numeros_errados.append(numero)
-            if letra in letras and numero <= len(self.get_poltronas()[0]) and numero > 0 and self.get_poltronas()[letras.index(letra)][numero - 1] == 1:
+            if letra in letras and numero <= len(self.get_cronograma()[id + " " + horario][0]) and numero > 0 and self.get_cronograma()[id + " " + horario][letras.index(letra)][numero - 1] == 1:
                 poltronas_indisponiveis.append(poltrona)
 
         if letras_erradas or numeros_errados or poltronas_indisponiveis:
@@ -83,15 +83,15 @@ class Sala:
             # Pega o índice da letra na lista de letras
             indice = letras.index(letra)
             # Faz uma cópia da linha de índice "incide" da matriz de poltronas
-            linha = self.poltronas[indice][:]
+            linha = self.get_cronograma()[id + " " + horario][indice][:]
             # Substitui o número da poltrona pelo valor 1
             linha[numero - 1] = 1
             # Atualiza a linha na matriz de poltronas
-            self.poltronas[indice] = linha
+            self.get_cronograma()[id + " " + horario][indice] = linha
         return []
 
     # Método que remove da matriz de poltronas as poltronas a serem removidas
-    def esvaziar_poltronas(self, poltronas):
+    def esvaziar_poltronas(self, poltronas, id, horario):
 
         # Pra cada poltronas na lista de poltronas a serem removidas
         for poltrona in poltronas:
@@ -102,59 +102,62 @@ class Sala:
             # Pega o índice da letra na lista de letras
             indice = letras.index(letra)
             # Faz uma cópia da linha de índice "incide" da matriz de poltronas
-            linha = self.poltronas[indice][:]
+            linha = self.get_cronograma()[id + " " + horario][indice][:]
             # Substitui o número da poltrona pelo valor 0
             linha[numero - 1] = 0
             # Atualiza a linha na matriz de poltronas
-            self.poltronas[indice] = linha
+            self.get_cronograma()[id + " " + horario][indice] = linha
 
-    def printar_poltronas(self):
+    def printar_poltronas(self, id, horario):
         # Printa a numeração das colunas
         print(" ", end=" ")
-        for coluna in range(len(self.poltronas[0]), 0, -1):
+        for coluna in range(len(self.get_cronograma()[id + " " + horario][0]), 0, -1):
             if coluna <= 9:
                 print(f"  {coluna}  ", end=" ")
             else:
                 print(f"  {coluna} ", end=" ")
 
         # Printa a letra da linha seguida por cada poltrona da linha
-        for linha in range(len(self.poltronas), 0, -1):
+        for linha in range(len(self.get_cronograma()[id + " " + horario]), 0, -1):
             print()
             print(letras[linha - 1], end=" ")
-            for coluna in range(len(self.poltronas[0]), 0, -1):
+            for coluna in range(len(self.get_cronograma()[id + " " + horario][0]), 0, -1):
                 # Bota um x na poltrona se ela estiver ocupada
                 print(
-                    f"[ {check_1(self.poltronas[linha -1][coluna - 1])} ]", end=" ")
+                    f"[ {check_1(self.get_cronograma()[id +' '+ horario][linha -1][coluna - 1])} ]", end=" ")
 
         # Printa a posição da TELA
         print()
         t = "TELA"
-        print(t.center((int(len(self.poltronas[0])*6)) - 4))
+        print(
+            t.center((int(len(self.get_cronograma()[id + " " + horario][0])*6)) - 4))
 
     # print_info imprime os informações da sala
     def print_info(self):
-        print(f"Ocupada: {self.ocupada}")
+        # MODIFICAR FUNCAO PARA PRINTAR CADA SESSAO E CADA HORARIO DE CADA FUNCAO E SUAS POLTRONAS
         print(f"Cronograma: {self.cronograma}")
         print("Poltronas:")
-        printa_matriz(self.poltronas)
+        # printa_matriz(self.poltronas)
         print(f"Sessões: {self.sessoes}")
 
     # Função que adiciona uma sessão à sala (cronograma)
     def adicionar_sessao(self, sessao):
-        chave = sessao.get_id()
-        valor = sessao.get_horarios()
-        # Atualiza o cronograma com a sessão
-        self.cronograma[chave] = valor
+
+        for horario in sessao.get_horarios():
+
+            self.cronograma[sessao.get_id() + " " +
+                            horario] = self.poltronas[:]
 
         # Adiciona a sessão à lista de sessões
         self.sessoes.append(sessao)
     # Função que remove sessão da sala (cronograma)
 
     def remover_sessao(self, sessao):
-        chave = sessao.get_id()
+
         # Remove a sessão do cronograma
-        if chave in self.cronograma:
-            del self.cronograma[chave]
+        for horario in sessao.get_horarios():
+            if (sessao.get_id() + " " + horario) in self.cronograma:
+                del self.cronograma[sessao.get_id() + " " + horario]
 
         # Remove a sessão da lista de sessões
         if sessao in self.sessoes:
@@ -163,18 +166,16 @@ class Sala:
     # Função que devolve a sessão que passara em um determinado horário
 
     def get_sessao_from_cronograma(self):
-        for id in self.cronograma:
+        for chave in self.cronograma:
             for sessao in self.sessoes:
-                if sessao.get_id() == id:
+                if sessao.get_id() == chave.split()[0]:
                     sessao.print_info()
 
 
 # Exemplo de lista de salas
 sala1 = Sala()
-sala1.preencher_poltronas(["a1", "b2", "c3", "d4", "e5", "f6", "a7",
-                          "h8", "a9", "f10"])
+
 sala2 = Sala()
-sala2.preencher_poltronas(["e5", "f6", "a7", "h8", "a9", "f10"])
 
 salas = [sala1, sala2]
 '''

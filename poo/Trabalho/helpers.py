@@ -23,6 +23,8 @@ def lugares_disponiveis(matriz):
 
 # Função most_empty: recebe uma lista de salas e retorna a sala com mais lugares disponíveis
 
+# Função que verifica qual sala está mais vazia
+
 
 def most_empty(matrizes):
     quantidade_de_lugares_disponiveis_da_matriz_mais_vazia = 0
@@ -34,13 +36,16 @@ def most_empty(matrizes):
     return quantidade_de_lugares_disponiveis_da_matriz_mais_vazia
 
 
-# DEIXAR PRA O AMOR DA MINHA VIDA EXPLICAR A FUNCAO
+# Função que verifica se a informação foi escrita corretamente
 def verificador_input(coisa, lista, condicao, mensagem_erro):
     while True:
+        # Pede um numero para o usuario
         numero = int(
             input(f"Digite o número {coisa} que você deseja: "))
+        # Se o numero dado pelo usuario existir dentro da lista de coisas que ele está buscando, ele vai retornar a opção escolhida
         if (condicao == 'in' and numero - 1 in range(len(lista))) or (condicao == '<=' and numero <= lista[0] and numero > 0):
             return numero
+        # Se o numero não existir, é printado um aviso
         else:
             print(mensagem_erro)
 
