@@ -39,11 +39,10 @@ for game in range(1, 16):
                 vitorias_time_I += 1
             else:
                 vitorias_time_J += 1
+        elif vitorias_time_K == 1:
+            vitorias_time_K += 1
         else:
-            if vitorias_time_K == 1:
-                vitorias_time_K += 1
-            else:
-                vitorias_time_L += 1
+            vitorias_time_L += 1
     elif game == 12:
         if gols_1 > gols_2:
             if vitorias_time_M == 1:

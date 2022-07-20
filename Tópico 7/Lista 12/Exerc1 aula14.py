@@ -1,6 +1,6 @@
 pessoas = []
 while True:
-    
+
     cadastrar = input("Deseja cadastrar? [S/N] ")
     if cadastrar == 'S':
         num_pessoas = int(input("Quantas pessoas você deseja cadastrar? "))

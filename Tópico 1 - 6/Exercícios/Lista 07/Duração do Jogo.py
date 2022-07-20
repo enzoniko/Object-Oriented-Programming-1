@@ -1,5 +1,5 @@
 def duracao(inicio, fim):
-    
+
     duracao = 1
     inicio += 1
     while inicio != fim:

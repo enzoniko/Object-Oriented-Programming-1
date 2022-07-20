@@ -56,7 +56,7 @@ def quantidade_de_alunos_por_curso(relacao):
 
         # Se o curso for EPR ou EHD
         if curso in ['EPR', 'EHD']:
-            
+
             # Printa a quantidade de alunos por curso
             print(f'{curso}: {value}') 
 

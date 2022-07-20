@@ -37,12 +37,10 @@ def preencher_poltronas(sala_mais_vazia, quantidade_ingressos, id, horario):
         if erradas[0] != [] and erradas[1] == []:
             print(
                 f"Poltronas com letra(s) {lista_strings_para_string(letras_erradas)} não existem!")
-        # Se o usuario escrever um numero que não existe na matriz de poltronas, é printado um aviso
         elif erradas[1] != [] and erradas[0] == []:
             print(
                 f"Poltronas com número(s) {lista_strings_para_string([str(num) for num in numeros_errados])} não existem!")
-        # Se o usuario escrever um numero e letra que não esxistam na matriz de poltronas, é printado um aviso
-        elif erradas[0] != [] and erradas[1] != []:
+        elif erradas[0] != []:
             print(
                 f"Poltronas com letra(s) {lista_strings_para_string(letras_erradas)} não existem!")
 
@@ -130,7 +128,13 @@ def sala_mais_vazia(quantidade_lugares_disponiveis_sala_mais_vazia, sessao):
     print("Poltronas: ")
     for sala in salas:
         for horario in sessao.get_horarios():
-            if sessao in sala.get_sessoes() and lugares_disponiveis(sala.get_cronograma()[sessao.get_id() + " " + horario]) == quantidade_lugares_disponiveis_sala_mais_vazia:
+            if (
+                sessao in sala.get_sessoes()
+                and lugares_disponiveis(
+                    sala.get_cronograma()[f"{sessao.get_id()} {horario}"]
+                )
+                == quantidade_lugares_disponiveis_sala_mais_vazia
+            ):
                 sala.printar_poltronas(sessao.get_id(), horario)
                 return sala
 
@@ -222,17 +226,14 @@ def excluir_sessao():
 
     # Mostra a sessão escolhida e seus horários
     mostrar_sessao(numero_da_sessao, mostrar_horarios=True)
-    # Pergunta se o usuário deseja excluir a sessão
-    if input("Deseja excluir a sessão? (S/N) ").upper() == 'S':
-        for sala in salas:
-            sala.remover_sessao(sessoes[numero_da_sessao - 1])
-
-        filmes.pop(filmes.index([filme for filme in filmes if filme.get_nome(
-        ) == sessoes[numero_da_sessao - 1].get_nome()][0]))
-        sessoes.pop(numero_da_sessao - 1)
-
-    else:
+    if input("Deseja excluir a sessão? (S/N) ").upper() != 'S':
         return
+    for sala in salas:
+        sala.remover_sessao(sessoes[numero_da_sessao - 1])
+
+    filmes.pop(filmes.index([filme for filme in filmes if filme.get_nome(
+    ) == sessoes[numero_da_sessao - 1].get_nome()][0]))
+    sessoes.pop(numero_da_sessao - 1)
 
 # Função que adiciona uma nova sessão
 
@@ -315,8 +316,6 @@ def total_faturado():
     # Se não existir nenhuma compra confirmada, é printado um aviso
     if pagamentos == []:
         print("Não existem pagamentos cadastrados")
-        print()
-    # Caso o contrario
     else:
         # É somado cada um dos pagamentos
         total = sum(pagamento.get_valor()
@@ -332,7 +331,8 @@ def total_faturado():
         print(
             # Printa apenas a quantidade dos ingressos vendidos pela metade do preço
             f"QUantidade de meia-entradas vendidas: {sum(pagamento.get_meias() for pagamento in pagamentos)}")
-        print()
+
+    print()
 
 # Função do Administrador
 
@@ -423,8 +423,19 @@ def usuario():
     print()
 
     # Quantidade de lugares disponíveis na sala mais vazia que passa a sessão escolhida
-    quantidade_lugares_disponiveis_sala_mais_vazia = most_empty([[sala.get_cronograma()[sessoes[numero_da_sessao - 1].get_id() + " " + horario] for sessao in sala.get_sessoes(
-    ) if sessao.get_id() == sessoes[numero_da_sessao - 1].get_id()] for sala in salas])
+    quantidade_lugares_disponiveis_sala_mais_vazia = most_empty(
+        [
+            [
+                sala.get_cronograma()[
+                    f"{sessoes[numero_da_sessao - 1].get_id()} {horario}"
+                ]
+                for sessao in sala.get_sessoes()
+                if sessao.get_id() == sessoes[numero_da_sessao - 1].get_id()
+            ]
+            for sala in salas
+        ]
+    )
+
 
     # Pergunta quantos ingressos o usuário deseja comprar
     quantidade_ingressos = verificador_input("de ingressos", [
