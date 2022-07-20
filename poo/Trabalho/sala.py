@@ -1,5 +1,5 @@
 # Importa a sub classe Sessao do módulo sessao
-from sessao import Sessao, sessoes
+from sessao import Sessao
 
 # Importa a função printa_matriz e check_1 do módulo helpers
 from helpers import check_1, printa_matriz
@@ -18,11 +18,10 @@ letras = ["a", "b", "c", "d", "e", "f", "g",
 class Sala:
 
     # Construtor da classe Sala, recebe os atributos da classe Sala (ocupada, cronograma(dicionário de sessões e seus horários associados))
-    def __init__(self, ocupada=False, cronograma=dict()):
+    def __init__(self, poltronas=[[0] * COLUNAS]*LINHAS, cronograma=dict()):
         self.cronograma = cronograma
         # Cria uma matriz de poltronas com 15 linhas e 20 colunas, incialmente todas as poltronas estão livres
-        self.poltronas = [[0] * COLUNAS]*LINHAS
-        self.ocupada = ocupada
+        self.poltronas = poltronas
         # Lista de sessões da sala
         self.sessoes = []
 
@@ -150,6 +149,17 @@ class Sala:
         # Adiciona a sessão à lista de sessões
         self.sessoes.append(sessao)
     # Função que remove sessão da sala (cronograma)
+
+    def remover_sessao(self, sessao):
+        chave = sessao.get_id()
+        # Remove a sessão do cronograma
+        if chave in self.cronograma:
+            del self.cronograma[chave]
+
+        # Remove a sessão da lista de sessões
+        if sessao in self.sessoes:
+            self.sessoes.remove(sessao)
+
     # Função que devolve a sessão que passara em um determinado horário
 
     def get_sessao_from_cronograma(self):
@@ -163,13 +173,8 @@ class Sala:
 sala1 = Sala()
 sala1.preencher_poltronas(["a1", "b2", "c3", "d4", "e5", "f6", "a7",
                           "h8", "a9", "f10"])
-sala1.adicionar_sessao(sessoes[0])
-sala1.adicionar_sessao(sessoes[3])
-
 sala2 = Sala()
 sala2.preencher_poltronas(["e5", "f6", "a7", "h8", "a9", "f10"])
-sala2.adicionar_sessao(sessoes[1])
-sala2.adicionar_sessao(sessoes[2])
 
 salas = [sala1, sala2]
 '''

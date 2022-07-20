@@ -36,8 +36,8 @@ class Filme:
 
 
 # Exemplo de lista de filmes:
-filmes = [Filme("Titanic", ["drama", "romance"]), Filme(
-    "Titanic 2", ["drama", "romance", "ficção científica"])]
+# filmes = [Filme("Titanic", ["drama", "romance"]), Filme(
+#    "Titanic 2", ["drama", "romance", "ficção científica"])]
 '''
 # Inicio teste
 # Cria um filme

@@ -9,8 +9,8 @@ from helpers import lista_strings_para_string
 
 class Sessao(Filme):
 
-    # Construtor da sub classe Sessao, recebe os atributos da super classe Filme e os atributos específicos da sub classe Sessao (legenda, horários, DDD = False)
-    def __init__(self, nome, generos, horarios, DDD=False, legenda=False):
+    # Construtor da sub classe Sessao, recebe os atributos da super classe Filme e os atributos específicos da sub classe Sessao (legenda = False, horários, DDD = False)
+    def __init__(self, nome='', generos='', horarios='', DDD=False, legenda=False):
         super().__init__(nome, generos)
         self.legenda = legenda
         self.horarios = horarios
@@ -66,7 +66,6 @@ class Sessao(Filme):
         print(f"Horários: {lista_strings_para_string(self.horarios)}")
 
     # modifica_info modifica as informações da sessão
-
     def modifica_info(self, nome, generos, horarios, DDD, legenda):
         self.set_nome(nome)
         self.set_generos(generos)
@@ -78,8 +77,8 @@ class Sessao(Filme):
 
 
 # Exemplo de lista de sessões:
-sessoes = [Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], False, True), Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, False), Sessao("Titanic 2", [
-    "drama", "romance", "ficção científica"], ["9:00", "14:00"], False, False), Sessao("Titanic 2", ["drama", "romance", "ficção científica"], ["9:00", "14:00"], True, False)]
+# sessoes = [Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], False, True), Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, False), Sessao("The Godfather", [
+    # "drama", "romance", "ficção científica"], ["9:00", "14:00"], False, False), Sessao("Titanic 2", ["drama", "romance", "ficção científica"], ["9:00", "14:00"], True, False)]
 '''
 # Inicio teste
 s1 = Sessao("Titanic", ["drama", "romance"], ["19:00", "20:00"], True, True)
