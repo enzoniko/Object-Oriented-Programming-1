@@ -8,7 +8,7 @@ while True:
         matriz.append(linha)
 
     for linha in range(len(matriz)):
-            
+
         nivel_ventilador_esquerda = next(
             (
                 matriz[linha][ventilador_esquerda]
