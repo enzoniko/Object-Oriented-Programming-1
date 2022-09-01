@@ -6,7 +6,7 @@ def mdc(a, b):
     
 primes = []
 def primo(p):
-
+    # Isso daqui era minha interpretação do teorema de fermat que aprendi em matématica discreta um semestre atrás.
     primo = any(mdc(a, p) == 1 and (a**(p - 1)) % p == 1 for a in range(1, p))
     # Verificação de pseudoprimos
     if primo:
